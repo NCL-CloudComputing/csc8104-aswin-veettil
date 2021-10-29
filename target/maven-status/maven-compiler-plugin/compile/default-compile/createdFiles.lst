@@ -1,0 +1,17 @@
+org/jboss/quickstarts/wfk/util/RestServiceExceptionHandler.class
+org/jboss/quickstarts/wfk/contact/ContactRestService.class
+org/jboss/quickstarts/wfk/util/RestServiceException.class
+org/jboss/quickstarts/wfk/contact/ContactValidator.class
+org/jboss/quickstarts/wfk/contact/UniqueEmailException.class
+org/jboss/quickstarts/wfk/area/InvalidAreaCodeException.class
+org/jboss/quickstarts/wfk/contact/ContactRepository.class
+org/jboss/quickstarts/wfk/util/ApiOriginFilter.class
+org/jboss/quickstarts/wfk/util/JacksonConfig.class
+org/jboss/quickstarts/wfk/contact/Contact_.class
+org/jboss/quickstarts/wfk/util/Resources.class
+org/jboss/quickstarts/wfk/area/AreaService.class
+org/jboss/quickstarts/wfk/area/Area.class
+org/jboss/quickstarts/wfk/ContactServiceApplication.class
+org/jboss/quickstarts/wfk/util/ErrorMessage.class
+org/jboss/quickstarts/wfk/contact/Contact.class
+org/jboss/quickstarts/wfk/contact/ContactService.class
