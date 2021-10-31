@@ -42,4 +42,50 @@ public class Customer implements Serializable {
     @NotEmpty
     @Email(message = "The email address must be in the format of name@domain.com")
     private String email;
+
+    @NotNull
+    @Column(name = "booking_id")
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Booking booking;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
 }

@@ -20,10 +20,6 @@ public class Booking implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date bookingDate;
 
-    @NotNull
-    @Column(name = "customer_id")
-    private Contact customer;
-
     public Long getId() {
         return id;
     }
@@ -38,14 +34,6 @@ public class Booking implements Serializable {
 
     public void setBookingDate(Date bookingDate) {
         this.bookingDate = bookingDate;
-    }
-
-    public Contact getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Contact customer) {
-        this.customer = customer;
     }
 }
 

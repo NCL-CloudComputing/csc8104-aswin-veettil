@@ -26,7 +26,39 @@ public class Taxi implements Serializable {
 
     @NotNull
     @Column(name = "booking_id")
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
     private Booking booking;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getVehicleRegNo() {
+        return vehicleRegNo;
+    }
+
+    public void setVehicleRegNo(String vehicleRegNo) {
+        this.vehicleRegNo = vehicleRegNo;
+    }
+
+    public String getNoOfSeats() {
+        return noOfSeats;
+    }
+
+    public void setNoOfSeats(String noOfSeats) {
+        this.noOfSeats = noOfSeats;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
 }
