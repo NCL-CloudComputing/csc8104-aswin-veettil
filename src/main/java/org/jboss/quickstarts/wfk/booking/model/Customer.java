@@ -13,8 +13,8 @@ import java.io.Serializable;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = Contact.FIND_ALL, query = "SELECT c FROM Customer c ORDER BY c.lastName ASC, c.firstName ASC"),
-        @NamedQuery(name = Contact.FIND_BY_EMAIL, query = "SELECT c FROM Customer c WHERE c.email = :email")
+        @NamedQuery(name = Customer.FIND_ALL, query = "SELECT c FROM Customer c ORDER BY c.lastName ASC, c.firstName ASC"),
+        @NamedQuery(name = Customer.FIND_BY_EMAIL, query = "SELECT c FROM Customer c WHERE c.email = :email")
 })
 @XmlRootElement
 @Table(name = "customer", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -42,12 +42,6 @@ public class Customer implements Serializable {
     @NotEmpty
     @Email(message = "The email address must be in the format of name@domain.com")
     private String email;
-
-    @NotNull
-    @Column(name = "booking_id")
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Booking booking;
 
     public Long getId() {
         return id;
@@ -81,11 +75,4 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
 }

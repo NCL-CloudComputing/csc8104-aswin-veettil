@@ -1,13 +1,13 @@
 package org.jboss.quickstarts.wfk.booking.model;
 
-import org.jboss.quickstarts.wfk.contact.Contact;
-
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+@Entity
 @Table(name = "booking")
 public class Booking implements Serializable {
     @Id
@@ -19,6 +19,8 @@ public class Booking implements Serializable {
     @Column(name = "booking_date")
     @Temporal(TemporalType.DATE)
     private Date bookingDate;
+
+    private Taxi taxiBooking;
 
     public Long getId() {
         return id;
@@ -35,5 +37,14 @@ public class Booking implements Serializable {
     public void setBookingDate(Date bookingDate) {
         this.bookingDate = bookingDate;
     }
+
+    public Taxi getTaxiBooking() {
+        return taxiBooking;
+    }
+
+    public void setTaxiBooking(Taxi taxiBooking) {
+        this.taxiBooking = taxiBooking;
+    }
+
 }
 

@@ -5,9 +5,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-
+@Entity
+@NamedQueries({
+        @NamedQuery(name = Taxi.FIND_ALL, query = "SELECT t FROM Taxi t"),
+})
 @Table(name = "taxi")
 public class Taxi implements Serializable {
+    public static final String FIND_ALL = "Taxi.findAll";
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
@@ -24,11 +29,8 @@ public class Taxi implements Serializable {
     @Column(name = "noo_of_seats")
     private String noOfSeats;
 
-    @NotNull
-    @Column(name = "booking_id")
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Booking booking;
+    public Taxi() {
+    }
 
     public Long getId() {
         return id;
@@ -52,13 +54,5 @@ public class Taxi implements Serializable {
 
     public void setNoOfSeats(String noOfSeats) {
         this.noOfSeats = noOfSeats;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
     }
 }
