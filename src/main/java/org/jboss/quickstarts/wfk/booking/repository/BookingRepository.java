@@ -1,7 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
 import org.jboss.quickstarts.wfk.booking.model.Booking;
-import org.jboss.quickstarts.wfk.booking.model.Customer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
