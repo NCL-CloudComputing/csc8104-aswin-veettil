@@ -1,15 +1,9 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
-import org.jboss.quickstarts.wfk.booking.model.Booking;
-import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
-import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
-import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
-import org.jboss.quickstarts.wfk.contact.Contact;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 public class TaxiService {

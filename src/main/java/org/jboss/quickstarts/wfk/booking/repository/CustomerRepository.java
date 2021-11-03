@@ -1,7 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
 import org.jboss.quickstarts.wfk.booking.model.Customer;
-import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.contact.Contact;
 
 import javax.inject.Inject;
@@ -11,8 +10,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.logging.Logger;
 

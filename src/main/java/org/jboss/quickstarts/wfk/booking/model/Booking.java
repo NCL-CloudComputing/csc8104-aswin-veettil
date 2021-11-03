@@ -1,15 +1,20 @@
 package org.jboss.quickstarts.wfk.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Booking.FIND_ALL, query = "SELECT b FROM Booking b"),
+})
 @Table(name = "booking")
 public class Booking implements Serializable {
+    public static final String FIND_ALL = "Booking.findAll";
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
@@ -20,7 +25,15 @@ public class Booking implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date bookingDate;
 
-    private Taxi taxiBooking;
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "taxi_id", referencedColumnName = "id")
+    private Taxi taxi;
+
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private Customer customer;
 
     public Long getId() {
         return id;
@@ -38,13 +51,34 @@ public class Booking implements Serializable {
         this.bookingDate = bookingDate;
     }
 
-    public Taxi getTaxiBooking() {
-        return taxiBooking;
+    public Taxi getTaxi() {
+        return taxi;
     }
 
-    public void setTaxiBooking(Taxi taxiBooking) {
-        this.taxiBooking = taxiBooking;
+    public void setTaxi(Taxi taxi) {
+        this.taxi = taxi;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    @JsonProperty("taxiId")
+    private void setTaxiObject(Long taxiId) {
+        Taxi taxi = new Taxi();
+        taxi.setId(taxiId);
+        this.setTaxi(taxi);
+    }
+
+    @JsonProperty("customerId")
+    private void setCustomerObject(Long customerId) {
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        this.setCustomer(customer);
+    }
 }
 

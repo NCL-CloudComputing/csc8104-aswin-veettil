@@ -1,29 +1,18 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.*;
-import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
-import org.jboss.quickstarts.wfk.booking.model.Booking;
-import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
-import org.jboss.quickstarts.wfk.booking.service.BookingService;
 import org.jboss.quickstarts.wfk.booking.service.TaxiService;
-import org.jboss.quickstarts.wfk.contact.Contact;
-import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.annotations.cache.Cache;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 @Path("/taxi")

@@ -21,7 +21,6 @@ import io.swagger.jaxrs.config.BeanConfig;
 import org.jboss.quickstarts.wfk.booking.BookingRestService;
 import org.jboss.quickstarts.wfk.booking.CustomerRestService;
 import org.jboss.quickstarts.wfk.booking.TaxiRestService;
-import org.jboss.quickstarts.wfk.booking.service.CustomerService;
 import org.jboss.quickstarts.wfk.contact.ContactRestService;
 import org.jboss.quickstarts.wfk.util.JacksonConfig;
 import org.jboss.quickstarts.wfk.util.RestServiceExceptionHandler;

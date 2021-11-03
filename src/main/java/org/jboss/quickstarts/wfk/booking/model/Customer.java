@@ -2,7 +2,6 @@ package org.jboss.quickstarts.wfk.booking.model;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jboss.quickstarts.wfk.contact.Contact;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
