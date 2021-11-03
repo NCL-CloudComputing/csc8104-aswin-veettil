@@ -1,6 +1,7 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
 import org.jboss.quickstarts.wfk.booking.model.Booking;
+import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.contact.Contact;
 
@@ -30,7 +31,15 @@ public class TaxiRepository {
         TypedQuery<Taxi> query = em.createNamedQuery(Taxi.FIND_ALL, Taxi.class);
         return query.getResultList();
     }
-
+    /**
+     * <p>Returns a single Taxi object, specified by a Long id.<p/>
+     *
+     * @param id The id field of the Taxi to be returned
+     * @return The Taxi with the specified id
+     */
+    public Taxi findById(Long id) {
+        return em.find(Taxi.class, id);
+    }
     public Taxi create(Taxi taxi) throws ConstraintViolationException, ValidationException, Exception {
         log.info("BookingRepository.create() - Creating ");
 
