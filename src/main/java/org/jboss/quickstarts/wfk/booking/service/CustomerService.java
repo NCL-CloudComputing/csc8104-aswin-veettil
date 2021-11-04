@@ -1,6 +1,5 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
-import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.util.RestServiceException;

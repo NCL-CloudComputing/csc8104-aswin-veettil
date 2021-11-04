@@ -1,27 +1,21 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.*;
-import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.GuestBooking;
 import org.jboss.quickstarts.wfk.booking.service.BookingService;
 import org.jboss.quickstarts.wfk.booking.service.CustomerService;
-import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
-import java.util.Map;
 
 @Path("/guestBooking")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -64,12 +58,12 @@ public class GuestBookingRestService {
 
         try {
             Booking booking = guestBooking.getBooking();
-            Customer customer = guestBooking.getCustomer();
+            Customer customer = booking.getCustomer();
             Customer cust = customerService.findByEmail(customer.getEmail());
             if (cust != null) {
                 booking.setCustomer(cust);
             } else {
-                // add the new Customer.
+                 //add the new Customer.
                 customer = customerService.create(customer);
                 booking.setCustomer(customer);
             }

@@ -1,8 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
-import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
-import org.jboss.quickstarts.wfk.contact.Contact;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -51,7 +49,10 @@ public class CustomerRepository {
      * @return The first Contact with the specified email
      */
     public Customer findByEmail(String email) {
-        TypedQuery<Customer> query = em.createNamedQuery(Contact.FIND_BY_EMAIL, Customer.class).setParameter("email", email);
+        TypedQuery<Customer> query = em.createNamedQuery(Customer.FIND_BY_EMAIL, Customer.class).setParameter("email", email);
+        if(query.getResultList().size() == 0) {
+            return null;
+        }
         return query.getSingleResult();
     }
 

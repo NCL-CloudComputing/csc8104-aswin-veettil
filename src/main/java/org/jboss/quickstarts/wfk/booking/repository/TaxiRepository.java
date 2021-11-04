@@ -1,6 +1,5 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
-import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 
 import javax.inject.Inject;
