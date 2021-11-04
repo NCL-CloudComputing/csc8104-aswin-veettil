@@ -1,5 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
+import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 
 import javax.inject.Inject;
@@ -43,6 +44,10 @@ public class TaxiRepository {
         // Write taxi to the database.
         em.persist(taxi);
 
+        return taxi;
+    }
+    public Taxi delete(Taxi taxi) {
+        em.remove(em.merge(taxi));
         return taxi;
     }
 }

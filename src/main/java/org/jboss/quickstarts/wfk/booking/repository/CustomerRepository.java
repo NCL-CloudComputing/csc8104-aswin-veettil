@@ -1,5 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
+import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.contact.Contact;
 
@@ -92,6 +93,11 @@ public class CustomerRepository {
         // Write taxi to the database.
         em.persist(customer);
 
+        return customer;
+    }
+
+    public Customer delete(Customer customer) {
+        em.remove(em.merge(customer));
         return customer;
     }
 }

@@ -1,7 +1,9 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
+import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
+import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -86,5 +88,15 @@ public class CustomerService {
 
         // Write the contact to the database.
         return crud.create(customer);
+    }
+
+    public Customer delete(Long bookingId) throws RestServiceException {
+        Customer customer = crud.findById(bookingId);
+        if(customer != null && customer.getId() != null) {
+            crud.delete(customer);
+        } else {
+            throw new RestServiceException("Invalid Customer Id");
+        }
+        return customer;
     }
 }

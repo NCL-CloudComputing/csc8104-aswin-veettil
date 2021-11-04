@@ -1,7 +1,9 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
+import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
+import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -42,5 +44,15 @@ public class TaxiService {
     public Taxi create(Taxi taxi) throws Exception {
         // Write the booking to the database.
         return crud.create(taxi);
+    }
+
+    public Taxi delete(Long taxiId) throws RestServiceException {
+        Taxi taxi = crud.findById(taxiId);
+        if(taxi != null && taxi.getId() != null) {
+            crud.delete(taxi);
+        } else {
+            throw new RestServiceException("Invalid Taxi Id");
+        }
+        return taxi;
     }
 }

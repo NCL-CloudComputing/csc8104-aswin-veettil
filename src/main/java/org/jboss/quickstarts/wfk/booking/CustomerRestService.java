@@ -190,4 +190,39 @@ public class CustomerRestService {
         log.info("createContact completed. Contact = " + customer.toString());
         return builder.build();
     }
+    /**
+     * <p>Deletes a customer using the ID provided. If the ID is not present then nothing can be deleted.</p>
+     *
+     * <p>Will return a JAX-RS response with either 204 NO CONTENT or with a map of fields, and related errors.</p>
+     *
+     * @param id The Long parameter value provided as the id of the customer to be deleted
+     * @return A Response indicating the outcome of the delete operation
+     */
+    @DELETE
+    @Path("/{id:[0-9]+}")
+    @ApiOperation(value = "Delete a customer from the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "The customer has been successfully deleted"),
+            @ApiResponse(code = 400, message = "Invalid customer id supplied"),
+            @ApiResponse(code = 404, message = "customer with id not found"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
+    public Response deleteCustomer(
+            @ApiParam(value = "Id of customer to be deleted", allowableValues = "range[0, infinity]", required = true)
+            @PathParam("id")
+                    long id) throws RestServiceException {
+
+        Response.ResponseBuilder builder;
+
+        try {
+            service.delete(id);
+
+            builder = Response.noContent();
+
+        } catch (RestServiceException e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e.getMessage(), Response.Status.NOT_FOUND);
+        }
+        return builder.build();
+    }
 }

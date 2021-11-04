@@ -110,4 +110,39 @@ public class TaxiRestService {
         log.info("createTaxi completed. Booking = " + taxi.toString());
         return builder.build();
     }
+    /**
+     * <p>Deletes a taxi using the ID provided. If the ID is not present then nothing can be deleted.</p>
+     *
+     * <p>Will return a JAX-RS response with either 204 NO CONTENT or with a map of fields, and related errors.</p>
+     *
+     * @param id The Long parameter value provided as the id of the taxi to be deleted
+     * @return A Response indicating the outcome of the delete operation
+     */
+    @DELETE
+    @Path("/{id:[0-9]+}")
+    @ApiOperation(value = "Delete a taxi from the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "The taxi has been successfully deleted"),
+            @ApiResponse(code = 400, message = "Invalid taxi id supplied"),
+            @ApiResponse(code = 404, message = "taxi with id not found"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
+    public Response deleteTaxi(
+            @ApiParam(value = "Id of taxi to be deleted", allowableValues = "range[0, infinity]", required = true)
+            @PathParam("id")
+                    long id) throws RestServiceException {
+
+        Response.ResponseBuilder builder;
+
+        try {
+            service.delete(id);
+
+            builder = Response.noContent();
+
+        } catch (RestServiceException e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e.getMessage(), Response.Status.NOT_FOUND);
+        }
+        return builder.build();
+    }
 }
