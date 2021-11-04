@@ -56,7 +56,7 @@ public class ContactServiceApplication extends Application {
         //Add additional RESTService containing packages here, separated by commas:
         // "org.jboss.quickstarts.wfk.contact," +
         // "org.jboss.quickstarts.wfk.other"
-        beanConfig.setResourcePackage("org.jboss.quickstarts.wfk.contact");
+        beanConfig.setResourcePackage("org.jboss.quickstarts.wfk.contact," + "org.jboss.quickstarts.wfk.booking");
         beanConfig.setScan(true);
 
         //Do not edit below
