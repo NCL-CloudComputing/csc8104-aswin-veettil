@@ -149,7 +149,7 @@ public class CustomerRestService {
             @ApiResponse(code = 409, message = "customer supplied in request body conflicts with an existing Contact"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
-    public Response createContact(
+    public Response createCustomer(
             @ApiParam(value = "JSON representation of customer object to be added to the database", required = true)
                     Customer customer) {
 
