@@ -13,6 +13,7 @@ org/jboss/quickstarts/wfk/util/ErrorMessage.class
 org/jboss/quickstarts/wfk/booking/model/Taxi_.class
 org/jboss/quickstarts/wfk/util/RestServiceExceptionHandler.class
 org/jboss/quickstarts/wfk/booking/repository/TaxiRepository.class
+org/jboss/quickstarts/wfk/booking/model/GuestBooking.class
 org/jboss/quickstarts/wfk/booking/model/Customer_.class
 org/jboss/quickstarts/wfk/util/RestServiceException.class
 org/jboss/quickstarts/wfk/contact/ContactValidator.class
@@ -26,6 +27,7 @@ org/jboss/quickstarts/wfk/area/Area.class
 org/jboss/quickstarts/wfk/booking/TaxiRestService.class
 org/jboss/quickstarts/wfk/booking/model/Taxi.class
 org/jboss/quickstarts/wfk/contact/Contact.class
+org/jboss/quickstarts/wfk/booking/GuestBookingRestService.class
 org/jboss/quickstarts/wfk/booking/model/Customer.class
 org/jboss/quickstarts/wfk/booking/model/Booking_.class
 org/jboss/quickstarts/wfk/contact/ContactService.class
