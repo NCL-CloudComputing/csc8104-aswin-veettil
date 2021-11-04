@@ -58,4 +58,9 @@ public class BookingRepository {
 
         return booking;
     }
+
+    public Booking delete(Booking booking) {
+        em.remove(em.merge(booking));
+        return booking;
+    }
 }

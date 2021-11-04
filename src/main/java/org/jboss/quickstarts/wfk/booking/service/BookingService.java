@@ -6,6 +6,7 @@ import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
+import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -67,5 +68,15 @@ public class BookingService {
         bkng.setCustomer(customer);
 
         return bkng;
+    }
+
+    public Booking delete(Long bookingId) throws RestServiceException {
+        Booking booking = crud.findById(bookingId);
+        if(booking != null && booking.getId() != null) {
+            crud.delete(booking);
+        } else {
+            throw new RestServiceException("Invalid Booking Id");
+        }
+        return booking;
     }
 }

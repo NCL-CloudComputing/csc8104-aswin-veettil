@@ -4,6 +4,7 @@ import io.swagger.annotations.*;
 import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.service.BookingService;
+import org.jboss.quickstarts.wfk.contact.Contact;
 import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -137,6 +138,41 @@ public class BookingRestService {
         }
 
         log.info("createBooking completed. Booking = " + booking.toString());
+        return builder.build();
+    }
+    /**
+     * <p>Deletes a booking using the ID provided. If the ID is not present then nothing can be deleted.</p>
+     *
+     * <p>Will return a JAX-RS response with either 204 NO CONTENT or with a map of fields, and related errors.</p>
+     *
+     * @param id The Long parameter value provided as the id of the booking to be deleted
+     * @return A Response indicating the outcome of the delete operation
+     */
+    @DELETE
+    @Path("/{id:[0-9]+}")
+    @ApiOperation(value = "Delete a booking from the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "The booking has been successfully deleted"),
+            @ApiResponse(code = 400, message = "Invalid booking id supplied"),
+            @ApiResponse(code = 404, message = "booking with id not found"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
+    public Response deleteBooking(
+            @ApiParam(value = "Id of booking to be deleted", allowableValues = "range[0, infinity]", required = true)
+            @PathParam("id")
+                    long id) throws RestServiceException {
+
+        Response.ResponseBuilder builder;
+
+        try {
+            service.delete(id);
+
+            builder = Response.noContent();
+
+        } catch (RestServiceException e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e.getMessage(), Response.Status.NOT_FOUND);
+        }
         return builder.build();
     }
 }
