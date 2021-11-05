@@ -60,13 +60,12 @@ public class GuestBookingRestService {
             Booking booking = guestBooking.getBooking();
             Customer customer = guestBooking.getCustomer();
             Customer cust = customerService.findByEmail(customer.getEmail());
-            if (cust != null) {
-                booking.setCustomer(cust);
-            } else {
-                 //add the new Customer.
+            if (cust == null) {
+                //add the new Customer.
                 customer = customerService.create(customer);
-                booking.setCustomer(customer);
             }
+            //associate customer to booking
+            booking.setCustomer(customer);
             // add the new Booking.
             bookingService.create(booking);
             // Create a "Resource Created" 201 Response and pass the booking back in case it is needed.
