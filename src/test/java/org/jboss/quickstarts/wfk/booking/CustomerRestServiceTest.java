@@ -64,6 +64,7 @@ public class CustomerRestServiceTest {
         customer.setEmail("john@doe.com");
         customer.setFirstName("John");
         customer.setLastName("Doe");
+        customer.setPhoneNumber("(212) 555-1234");
         Response response = customerRestService.createCustomer(customer);
 
         assertEquals("Unexpected response status", 201, response.getStatus());

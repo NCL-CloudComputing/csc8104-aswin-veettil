@@ -44,6 +44,11 @@ public class Customer implements Serializable {
     @Email(message = "The email address must be in the format of name@domain.com")
     private String email;
 
+    @NotNull
+    @Pattern(regexp = "^\\([2-9][0-8][0-9]\\)\\s?[0-9]{3}\\-[0-9]{4}$")
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Booking> bookings;
@@ -78,6 +83,14 @@ public class Customer implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @JsonIgnore

@@ -1,5 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;

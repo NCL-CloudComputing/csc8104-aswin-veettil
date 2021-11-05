@@ -58,7 +58,7 @@ public class GuestBookingRestService {
 
         try {
             Booking booking = guestBooking.getBooking();
-            Customer customer = booking.getCustomer();
+            Customer customer = guestBooking.getCustomer();
             Customer cust = customerService.findByEmail(customer.getEmail());
             if (cust != null) {
                 booking.setCustomer(cust);

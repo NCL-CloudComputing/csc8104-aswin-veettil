@@ -11,6 +11,7 @@ public abstract class Customer_ {
 
 	public static volatile SingularAttribute<Customer, String> firstName;
 	public static volatile SingularAttribute<Customer, String> lastName;
+	public static volatile SingularAttribute<Customer, String> phoneNumber;
 	public static volatile SingularAttribute<Customer, Long> id;
 	public static volatile ListAttribute<Customer, Booking> bookings;
 	public static volatile SingularAttribute<Customer, String> email;
