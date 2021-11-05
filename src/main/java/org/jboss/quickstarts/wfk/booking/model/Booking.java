@@ -26,12 +26,12 @@ public class Booking implements Serializable {
     private Date bookingDate;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "taxi_id", referencedColumnName = "id")
     private Taxi taxi;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 

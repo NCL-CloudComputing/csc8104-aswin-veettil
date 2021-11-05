@@ -85,7 +85,7 @@ public class CustomerRestService {
             @ApiResponse(code = 200, message ="Customer found"),
             @ApiResponse(code = 404, message = "Customer with email not found")
     })
-    public Response retrieveContactsByEmail(
+    public Response retrieveCustomersByEmail(
             @ApiParam(value = "Email of Customer to be fetched", required = true)
             @PathParam("email")
                     String email) {
@@ -117,7 +117,7 @@ public class CustomerRestService {
             @ApiResponse(code = 200, message ="Contact found"),
             @ApiResponse(code = 404, message = "Contact with id not found")
     })
-    public Response retrieveContactById(
+    public Response retrieveCustomerById(
             @ApiParam(value = "Id of Contact to be fetched", allowableValues = "range[0, infinity]", required = true)
             @PathParam("id")
                     long id) {
@@ -219,7 +219,7 @@ public class CustomerRestService {
 
             builder = Response.noContent();
 
-        } catch (RestServiceException e) {
+        } catch (Exception e) {
             // Handle generic exceptions
             throw new RestServiceException(e.getMessage(), Response.Status.NOT_FOUND);
         }

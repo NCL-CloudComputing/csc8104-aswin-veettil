@@ -1,5 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -42,6 +44,10 @@ public class Customer implements Serializable {
     @Email(message = "The email address must be in the format of name@domain.com")
     private String email;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Booking> bookings;
+
     public Long getId() {
         return id;
     }
@@ -74,4 +80,13 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
+    @JsonIgnore
+    public List<Booking> getBooking() {
+        return bookings;
+    }
+
+    @JsonIgnore
+    public void setBooking(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 }

@@ -1,10 +1,14 @@
 package org.jboss.quickstarts.wfk.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
+
 @Entity
 @NamedQueries({
         @NamedQuery(name = Taxi.FIND_ALL, query = "SELECT t FROM Taxi t"),
@@ -28,6 +32,10 @@ public class Taxi implements Serializable {
     @Pattern(regexp = "[0-9-']+", message = "Please specify a valid number of seats")
     @Column(name = "noo_of_seats")
     private String noOfSeats;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "taxi", cascade = CascadeType.ALL)
+    private List<Booking> bookings;
 
     public Taxi() {
     }
@@ -54,5 +62,15 @@ public class Taxi implements Serializable {
 
     public void setNoOfSeats(String noOfSeats) {
         this.noOfSeats = noOfSeats;
+    }
+
+    @JsonIgnore
+    public List<Booking> getBooking() {
+        return bookings;
+    }
+
+    @JsonIgnore
+    public void setBooking(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 }
