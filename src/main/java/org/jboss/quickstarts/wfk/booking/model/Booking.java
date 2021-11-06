@@ -1,7 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -14,6 +13,7 @@ import java.util.Date;
     @NamedQuery(name = Booking.FIND_ALL, query = "SELECT b FROM Booking b"),
 })
 @Table(name = "booking")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Booking implements Serializable {
     public static final String FIND_ALL = "Booking.findAll";
     @Id
@@ -26,15 +26,29 @@ public class Booking implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date bookingDate;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "taxi_id", referencedColumnName = "id")
+    @JsonProperty("taxiId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Taxi taxi;
+
+    @Column(name = "hotel_id")
+    private Long hotelId;
+
+    @Column(name = "flight_id")
+    private Long flightId;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JsonProperty("customerId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Customer customer;
+
+    @JsonIgnore
+    private Long travelAgentId;
 
     public Long getId() {
         return id;
@@ -66,6 +80,32 @@ public class Booking implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Long getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(Long hotelId) {
+        this.hotelId = hotelId;
+    }
+
+    public Long getFlightId() {
+        return flightId;
+    }
+
+    public void setFlightId(Long flightId) {
+        this.flightId = flightId;
+    }
+
+    @JsonIgnore
+    public Long getTravelAgentId() {
+        return travelAgentId;
+    }
+
+    @JsonIgnore
+    public void setTravelAgentId(Long travelAgentId) {
+        this.travelAgentId = travelAgentId;
     }
 
     @JsonProperty("taxiId")

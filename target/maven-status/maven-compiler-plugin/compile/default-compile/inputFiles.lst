@@ -7,12 +7,14 @@
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/Customer.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/contact/ContactRestService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/repository/CustomerRepository.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/TravelAgent.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/CustomerRestService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/contact/Contact.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/area/InvalidAreaCodeException.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/util/JacksonConfig.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/contact/ContactValidator.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/Taxi.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/TravelAgentRestService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/util/ErrorMessage.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/service/TaxiService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/service/CustomerService.java
@@ -28,3 +30,4 @@
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/util/Resources.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/GuestBookingRestService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/repository/TaxiRepository.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/service/TravelAgentService.java

@@ -63,4 +63,12 @@ public class BookingRepository {
         em.remove(em.merge(booking));
         return booking;
     }
+
+    public List<Booking> findAllByCriteria(String field, Long id) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Booking> criteria = cb.createQuery(Booking.class);
+        Root<Booking> booking = criteria.from(Booking.class);
+        criteria.select(booking).where(cb.equal(booking.get(field), id));
+        return em.createQuery(criteria).getResultList();
+    }
 }

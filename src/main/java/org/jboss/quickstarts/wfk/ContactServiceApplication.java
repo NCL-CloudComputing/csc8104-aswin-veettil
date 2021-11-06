@@ -18,10 +18,7 @@ package org.jboss.quickstarts.wfk;
 
 
 import io.swagger.jaxrs.config.BeanConfig;
-import org.jboss.quickstarts.wfk.booking.BookingRestService;
-import org.jboss.quickstarts.wfk.booking.CustomerRestService;
-import org.jboss.quickstarts.wfk.booking.GuestBookingRestService;
-import org.jboss.quickstarts.wfk.booking.TaxiRestService;
+import org.jboss.quickstarts.wfk.booking.*;
 import org.jboss.quickstarts.wfk.contact.ContactRestService;
 import org.jboss.quickstarts.wfk.util.JacksonConfig;
 import org.jboss.quickstarts.wfk.util.RestServiceExceptionHandler;
@@ -74,6 +71,7 @@ public class ContactServiceApplication extends Application {
         services.add(TaxiRestService.class);
         services.add(CustomerRestService.class);
         services.add(GuestBookingRestService.class);
+        services.add(TravelAgentRestService.class);
 
         //Do not edit below
         services.add(RestServiceExceptionHandler.class);

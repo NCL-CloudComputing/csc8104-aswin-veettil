@@ -1,4 +1,5 @@
 org/jboss/quickstarts/wfk/booking/service/CustomerService.class
+org/jboss/quickstarts/wfk/booking/model/TravelAgent.class
 org/jboss/quickstarts/wfk/contact/ContactRestService.class
 org/jboss/quickstarts/wfk/booking/BookingRestService.class
 org/jboss/quickstarts/wfk/booking/service/TaxiService.class
@@ -22,8 +23,10 @@ org/jboss/quickstarts/wfk/area/InvalidAreaCodeException.class
 org/jboss/quickstarts/wfk/contact/ContactRepository.class
 org/jboss/quickstarts/wfk/booking/service/BookingService.class
 org/jboss/quickstarts/wfk/contact/Contact_.class
+org/jboss/quickstarts/wfk/booking/TravelAgentRestService.class
 org/jboss/quickstarts/wfk/util/Resources.class
 org/jboss/quickstarts/wfk/area/Area.class
+org/jboss/quickstarts/wfk/booking/service/TravelAgentService.class
 org/jboss/quickstarts/wfk/booking/TaxiRestService.class
 org/jboss/quickstarts/wfk/booking/model/Taxi.class
 org/jboss/quickstarts/wfk/contact/Contact.class
