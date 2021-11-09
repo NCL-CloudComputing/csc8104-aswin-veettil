@@ -17,10 +17,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/guestBooking")
+@Path("/guestBookings")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/guestBooking")
+@Api(value = "/guestBookings")
 @Stateless
 public class GuestBookingRestService {
     @Inject

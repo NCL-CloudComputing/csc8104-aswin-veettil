@@ -1,5 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
@@ -8,6 +9,8 @@ import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -15,14 +18,18 @@ import java.util.List;
 
 public class TravelAgentService {
     @Inject
+    private BookingService bookingSvc;
+    @Inject
     private BookingRepository bookingCrud;
-    @Inject
-    private TaxiRepository taxiCrud;
-    @Inject
-    private CustomerRepository custCrud;
+
+    private ResteasyClient client;
+
+    private static final String HOTEL_BASE_URL = "http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com";
+    private static final String FLIGHT_BASE_URL = "http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com";
 
     public TravelAgentService() {
-
+        // Create client service instance to make REST requests to upstream service
+        client = new ResteasyClientBuilder().build();
     }
     /**
      * <p>Returns a List of all persisted {@link TravelAgent} objects, sorted alphabetically by last name.<p/>
@@ -30,6 +37,7 @@ public class TravelAgentService {
      * @return List of TravelAgent objects
      */
     public List<Booking> findAll() {
+        //TODO: Change to booking svc
         return bookingCrud.findAllByCriteria("travelAgentId", TravelAgent.TRAVEL_AGENT_ID);
     }
 
@@ -44,8 +52,9 @@ public class TravelAgentService {
     public TravelAgent create(TravelAgent travelAgent) throws Exception {
         //TODO: add logic for flight and hotel
         Booking booking = travelAgent.getBooking();
+
         booking.setTravelAgentId(TravelAgent.TRAVEL_AGENT_ID);
-        bookingCrud.create(booking);
+        bookingSvc.create(booking);
         return travelAgent;
     }
 

@@ -15,10 +15,10 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Path("/taxi")
+@Path("/taxis")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/taxi", description = "Operations about taxi")
+@Api(value = "/taxis", description = "Operations about taxi")
 @Stateless
 public class TaxiRestService {
     @Inject

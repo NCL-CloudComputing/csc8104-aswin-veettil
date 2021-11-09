@@ -11,11 +11,13 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = Taxi.FIND_ALL, query = "SELECT t FROM Taxi t"),
+    @NamedQuery(name = Taxi.FIND_ALL, query = "SELECT t FROM Taxi t"),
+    @NamedQuery(name = Taxi.FIND_BY_REG_NO, query = "SELECT t FROM Taxi t WHERE t.vehicleRegNo = :regNo"),
 })
 @Table(name = "taxi")
 public class Taxi implements Serializable {
     public static final String FIND_ALL = "Taxi.findAll";
+    public static final String FIND_BY_REG_NO = "Taxi.findByRegNo";
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

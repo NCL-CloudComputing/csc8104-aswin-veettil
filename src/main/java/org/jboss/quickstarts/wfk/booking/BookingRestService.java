@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@Path("/booking")
+@Path("/bookings")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/booking", description = "Operations about bookings")
+@Api(value = "/bookings", description = "Operations about bookings")
 @Stateless
 public class BookingRestService {
     @Inject

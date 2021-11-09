@@ -1,5 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
+import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 
 import javax.inject.Inject;
@@ -36,6 +37,21 @@ public class TaxiRepository {
      */
     public Taxi findById(Long id) {
         return em.find(Taxi.class, id);
+    }
+    /**
+     * <p>Returns a single Taxi object, specified by a String email.</p>
+     *
+     * <p>If there is more than one Taxi with the specified Reg No, only the first encountered will be returned.<p/>
+     *
+     * @param regNo The regNo field of the taxi to be returned
+     * @return The first Taxi with the specified regNo
+     */
+    public Taxi findByRegNo(String regNo) {
+        TypedQuery<Taxi> query = em.createNamedQuery(Taxi.FIND_BY_REG_NO, Taxi.class).setParameter("regNo", regNo);
+        if(query.getResultList().size() == 0) {
+            return null;
+        }
+        return query.getSingleResult();
     }
     public Taxi create(Taxi taxi) throws ConstraintViolationException, ValidationException, Exception {
         log.info("BookingRepository.create() - Creating ");

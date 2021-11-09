@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Path("/travelAgent")
+@Path("/travelAgents")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/travelAgent")
+@Api(value = "/travelAgents")
 @Stateless
 public class TravelAgentRestService {
     @Inject
@@ -54,7 +54,7 @@ public class TravelAgentRestService {
 
         Response.ResponseBuilder builder;
         service.create(travelAgentBooking);
-         builder = Response.status(Response.Status.CREATED).entity(travelAgentBooking);
+        builder = Response.status(Response.Status.CREATED).entity(travelAgentBooking);
         return builder.build();
     }
 }
