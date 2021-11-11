@@ -30,7 +30,6 @@ public class Taxi implements Serializable {
     private String vehicleRegNo;
 
     @NotNull
-    @Size(min = 1, max = 25)
     @Pattern(regexp = "[0-9-']+", message = "Please specify a valid number of seats")
     @Column(name = "noo_of_seats")
     private String noOfSeats;

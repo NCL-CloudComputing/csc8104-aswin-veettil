@@ -58,10 +58,10 @@ public class BookingService {
      * @throws ConstraintViolationException, ValidationException, Exception
      */
     public Booking create(Booking booking) throws Exception {
-        Taxi taxi = taxiCrud.findByRegNo(booking.getTaxi().getVehicleRegNo());
+        Taxi taxi = taxiCrud.findById(booking.getTaxi().getId());
         booking.setTaxi(taxi);
 
-        Customer customer = custCrud.findByEmail(booking.getCustomer().getEmail());
+        Customer customer = custCrud.findById(booking.getCustomer().getId());
         booking.setCustomer(customer);
         // Write the booking to the database.
         crud.create(booking);

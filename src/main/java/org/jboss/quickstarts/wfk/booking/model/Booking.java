@@ -27,8 +27,8 @@ public class Booking implements Serializable {
     private Date bookingDate;
 
     @ManyToOne
-    @JoinColumn
-    @JsonProperty("taxi")
+    @JoinColumn(name = "taxi_id", referencedColumnName = "id")
+    @JsonProperty("taxiId")
     private Taxi taxi;
 
     @Column(name = "hotel_id")
@@ -39,8 +39,8 @@ public class Booking implements Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn
-    @JsonProperty("customer")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JsonProperty("customerId")
     private Customer customer;
 
     @JsonIgnore
@@ -102,6 +102,20 @@ public class Booking implements Serializable {
     @JsonIgnore
     public void setTravelAgentId(Long travelAgentId) {
         this.travelAgentId = travelAgentId;
+    }
+
+    @JsonProperty("taxiId")
+    private void setTaxiObject(Long taxiId) {
+        Taxi taxi = new Taxi();
+        taxi.setId(taxiId);
+        this.setTaxi(taxi);
+    }
+
+    @JsonProperty("customerId")
+    private void setCustomerObject(Long customerId) {
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        this.setCustomer(customer);
     }
 }
 
