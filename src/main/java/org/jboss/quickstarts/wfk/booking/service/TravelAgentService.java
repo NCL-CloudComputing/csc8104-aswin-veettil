@@ -14,7 +14,9 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TravelAgentService {
     @Inject
@@ -38,7 +40,10 @@ public class TravelAgentService {
      */
     public List<Booking> findAll() {
         //TODO: Change to booking svc
-        return bookingCrud.findAllByCriteria("travelAgentId", TravelAgent.TRAVEL_AGENT_ID);
+        Map<String, Object> fieldNameToVal = new HashMap<String, Object>() {{
+            put("travelAgentId", TravelAgent.TRAVEL_AGENT_ID);
+        }};
+        return bookingCrud.findAllByCriteria(fieldNameToVal);
     }
 
     /**

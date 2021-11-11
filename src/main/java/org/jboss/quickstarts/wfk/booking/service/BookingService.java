@@ -6,6 +6,7 @@ import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
+import org.jboss.quickstarts.wfk.booking.validate.BookingValidator;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
@@ -16,9 +17,7 @@ public class BookingService {
     @Inject
     private BookingRepository crud;
     @Inject
-    private TaxiRepository taxiCrud;
-    @Inject
-    private CustomerRepository custCrud;
+    private BookingValidator validator;
 
     public BookingService() {
 
@@ -57,12 +56,8 @@ public class BookingService {
      * @return The Booking object that has been successfully written to the application database
      * @throws ConstraintViolationException, ValidationException, Exception
      */
-    public Booking create(Booking booking) throws Exception {
-        Taxi taxi = taxiCrud.findById(booking.getTaxi().getId());
-        booking.setTaxi(taxi);
-
-        Customer customer = custCrud.findById(booking.getCustomer().getId());
-        booking.setCustomer(customer);
+    public Booking create(Booking booking) {
+        validator.validateBooking(booking);
         // Write the booking to the database.
         crud.create(booking);
         return booking;

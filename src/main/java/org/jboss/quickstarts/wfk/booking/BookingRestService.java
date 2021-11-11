@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -121,19 +122,15 @@ public class BookingRestService {
                 responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
             }
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
-
-        } catch (UniqueEmailException e) {
-            // Handle the unique constraint violation
-            Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("email", "That email is already used, please use a unique email");
-            throw new RestServiceException("Bad Request", responseObj, Response.Status.CONFLICT, e);
-        } catch (InvalidAreaCodeException e) {
-            Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("area_code", "The telephone area code provided is not recognised, please provide another");
-            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, e);
+        } catch (ValidationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<String, String>() {{
+                put("BAD_REQ", ce.getMessage());
+            }};
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
         } catch (Exception e) {
             // Handle generic exceptions
-            throw new RestServiceException(e);
+            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
 
         log.info("createBooking completed. Booking = " + booking.toString());

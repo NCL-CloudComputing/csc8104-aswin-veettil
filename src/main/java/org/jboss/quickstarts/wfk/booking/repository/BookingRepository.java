@@ -1,6 +1,8 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
 import org.jboss.quickstarts.wfk.booking.model.Booking;
+import org.jboss.quickstarts.wfk.booking.model.Taxi;
+import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -8,10 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class BookingRepository {
@@ -50,7 +53,7 @@ public class BookingRepository {
         return em.createQuery(criteria).getResultList();
     }
 
-    public Booking create(Booking booking) throws ConstraintViolationException, ValidationException, Exception {
+    public Booking create(Booking booking) {
         log.info("BookingRepository.create() - Creating ");
 
         // Write booking to the database.
@@ -64,11 +67,14 @@ public class BookingRepository {
         return booking;
     }
 
-    public List<Booking> findAllByCriteria(String field, Long id) {
+    public List<Booking> findAllByCriteria(Map<String, Object> fieldNameToVal) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Booking> criteria = cb.createQuery(Booking.class);
         Root<Booking> booking = criteria.from(Booking.class);
-        criteria.select(booking).where(cb.equal(booking.get(field), id));
+        for (String fieldName : fieldNameToVal.keySet()) {
+            Object val = fieldNameToVal.get(fieldName);
+            criteria.select(booking).where(cb.equal(booking.get(fieldName), val));
+        }
         return em.createQuery(criteria).getResultList();
     }
 }

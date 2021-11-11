@@ -10,12 +10,17 @@ import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
+import java.util.Map;
 
 @Path("/guestBookings")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -47,7 +52,7 @@ public class GuestBookingRestService {
     })
     public Response createGuestBooking(
             @ApiParam(value = "JSON representation of GuestBooking object to be added to the database", required = true)
-                    GuestBooking guestBooking) {
+                    GuestBooking guestBooking) throws RestServiceException {
 
 
         if (guestBooking == null) {
@@ -56,26 +61,38 @@ public class GuestBookingRestService {
 
         Response.ResponseBuilder builder;
 
+        Booking booking = guestBooking.getBooking();
+        Customer customer = guestBooking.getCustomer();
+        Customer cust = customerService.findByEmail(customer.getEmail());
+        if (cust == null) {
+            //add the new Customer.
+            cust = customerService.create(customer);
+        }
+        //associate customer to booking
+        booking.setCustomer(cust);
         try {
-            Booking booking = guestBooking.getBooking();
-            Customer customer = guestBooking.getCustomer();
-            Customer cust = customerService.findByEmail(customer.getEmail());
-            if (cust == null) {
-                //add the new Customer.
-                customer = customerService.create(customer);
-            }
-            //associate customer to booking
-            booking.setCustomer(customer);
             // add the new Booking.
             bookingService.create(booking);
-            // Create a "Resource Created" 201 Response and pass the booking back in case it is needed.
-            builder = Response.status(Response.Status.CREATED).entity(guestBooking);
+        }  catch (ConstraintViolationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<>();
 
-
+            for (ConstraintViolation<?> violation : ce.getConstraintViolations()) {
+                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (ValidationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<String, String>() {{
+                put("BAD_REQ", ce.getMessage());
+            }};
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
         } catch (Exception e) {
             // Handle generic exceptions
-            throw new RestServiceException(e);
+            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
+        // Create a "Resource Created" 201 Response and pass the booking back in case it is needed.
+        builder = Response.status(Response.Status.CREATED).entity(guestBooking);
         return builder.build();
     }
 }
