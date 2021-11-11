@@ -61,6 +61,24 @@ public class TaxiRepository {
 
         return taxi;
     }
+    /**
+     * <p>Updates an existing Taxi object in the application database with the provided Taxi object.</p>
+     *
+     * <p>{@link javax.persistence.EntityManager#merge(Object) merge(Object)} creates a new instance of your entity,
+     * copies the state from the supplied entity, and makes the new copy managed. The instance you pass in will not be
+     * managed (any changes you make will not be part of the transaction - unless you call merge again).</p>
+     *
+     * <p>merge(Object) however must have an object with the @Id already generated.</p>
+     *
+     * @param taxi The Taxi object to be merged with an existing Taxi
+     * @return The Taxi that has been merged
+     */
+    public Taxi update(Taxi taxi) {
+        // Either update the customer or add it if it can't be found.
+        em.merge(taxi);
+
+        return taxi;
+    }
     public Taxi delete(Taxi taxi) {
         em.remove(em.merge(taxi));
         return taxi;

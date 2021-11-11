@@ -1,8 +1,11 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.*;
+import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.service.CustomerService;
+import org.jboss.quickstarts.wfk.contact.Contact;
+import org.jboss.quickstarts.wfk.contact.ContactService;
 import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -188,6 +191,76 @@ public class CustomerRestService {
         }
 
         log.info("createContact completed. Contact = " + customer.toString());
+        return builder.build();
+    }
+    /**
+     * <p>Updates the customer with the ID provided in the database. Performs validation, and will return a JAX-RS response
+     * with either 200 (ok), or with a map of fields, and related errors.</p>
+     *
+     * @param customer The Customer object, constructed automatically from JSON input, to be <i>updated</i> via
+     * {@link CustomerService#update(Customer)}
+     * @param id The long parameter value provided as the id of the Customer to be updated
+     * @return A Response indicating the outcome of the create operation
+     */
+    @PUT
+    @Path("/{id:[0-9]+}")
+    @ApiOperation(value = "Update a Customer in the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Customer updated successfully"),
+            @ApiResponse(code = 400, message = "Invalid Customer supplied in request body"),
+            @ApiResponse(code = 404, message = "Customer with id not found"),
+            @ApiResponse(code = 409, message = "Customer details supplied in request body conflict with another existing Customer"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
+    public Response updateCustomer(
+            @ApiParam(value = "Id of Customer to be updated", allowableValues = "range[0, infinity]", required = true)
+            @PathParam("id")
+                    long id,
+            @ApiParam(value = "JSON representation of Contact object to be updated in the database", required = true)
+                    Customer customer) {
+
+        if (customer == null || customer.getId() == null) {
+            throw new RestServiceException("Invalid Contact supplied in request body", Response.Status.BAD_REQUEST);
+        }
+
+        if (customer.getId() != null && customer.getId() != id) {
+            // The client attempted to update the read-only Id. This is not permitted.
+            Map<String, String> responseObj = new HashMap<>();
+            responseObj.put("id", "The Customer ID in the request body must match that of the Customer being updated");
+            throw new RestServiceException("Customer details supplied in request body conflict with another Contact",
+                    responseObj, Response.Status.CONFLICT);
+        }
+
+        if (service.findById(customer.getId()) == null) {
+            // Verify that the customer exists. Return 404, if not present.
+            throw new RestServiceException("No Customer with the id " + id + " was found!", Response.Status.NOT_FOUND);
+        }
+
+        Response.ResponseBuilder builder;
+
+        try {
+            // Apply the changes the Contact.
+            service.update(customer);
+            // Create an OK Response and pass the customer back in case it is needed.
+            builder = Response.ok(customer);
+        } catch (ConstraintViolationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<>();
+
+            for (ConstraintViolation<?> violation : ce.getConstraintViolations()) {
+                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+
+        } catch (UniqueEmailException e) {
+            // Handle the unique constraint violation
+            Map<String, String> responseObj = new HashMap<>();
+            responseObj.put("email", "That email is already used, please use a unique email");
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.CONFLICT, e);
+        } catch (Exception e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e);
+        }
         return builder.build();
     }
     /**

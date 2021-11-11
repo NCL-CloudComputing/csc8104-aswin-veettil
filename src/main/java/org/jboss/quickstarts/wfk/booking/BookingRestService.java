@@ -154,7 +154,7 @@ public class BookingRestService {
             @ApiResponse(code = 409, message = "Booking details supplied in request body conflict with another existing Booking"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
-    public Response updateContact(
+    public Response updateBooking(
             @ApiParam(value = "Id of Booking to be updated", allowableValues = "range[0, infinity]", required = true)
             @PathParam("id")
                     long id,

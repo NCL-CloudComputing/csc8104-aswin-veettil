@@ -1,6 +1,7 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
 import org.jboss.quickstarts.wfk.booking.model.Customer;
+import org.jboss.quickstarts.wfk.contact.Contact;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,6 +10,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -96,7 +99,23 @@ public class CustomerRepository {
 
         return customer;
     }
-
+    /**
+     * <p>Updates an existing Customer object in the application database with the provided Customer object.</p>
+     *
+     * <p>{@link javax.persistence.EntityManager#merge(Object) merge(Object)} creates a new instance of your entity,
+     * copies the state from the supplied entity, and makes the new copy managed. The instance you pass in will not be
+     * managed (any changes you make will not be part of the transaction - unless you call merge again).</p>
+     *
+     * <p>merge(Object) however must have an object with the @Id already generated.</p>
+     *
+     * @param customer The Customer object to be merged with an existing Customer
+     * @return The Customer that has been merged
+     */
+    public Customer update(Customer customer) {
+        // Either update the customer or add it if it can't be found.
+        em.merge(customer);
+        return customer;
+    }
     public Customer delete(Customer customer) {
         em.remove(em.merge(customer));
         return customer;

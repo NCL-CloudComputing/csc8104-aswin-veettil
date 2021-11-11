@@ -1,7 +1,9 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.*;
+import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
+import org.jboss.quickstarts.wfk.booking.service.BookingService;
 import org.jboss.quickstarts.wfk.booking.service.TaxiService;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -125,6 +127,78 @@ public class TaxiRestService {
         }
 
         log.info("createTaxi completed. Booking = " + taxi.toString());
+        return builder.build();
+    }
+    /**
+     * <p>Updates the taxi with the ID provided in the database. Performs validation, and will return a JAX-RS response
+     * with either 200 (ok), or with a map of fields, and related errors.</p>
+     *
+     * @param taxi The Taxi object, constructed automatically from JSON input, to be <i>updated</i> via
+     * {@link TaxiService#update(Taxi)}
+     * @param id The long parameter value provided as the id of the Booking to be updated
+     * @return A Response indicating the outcome of the create operation
+     */
+    @PUT
+    @Path("/{id:[0-9]+}")
+    @ApiOperation(value = "Update a Taxi in the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Taxi updated successfully"),
+            @ApiResponse(code = 400, message = "Invalid Taxi supplied in request body"),
+            @ApiResponse(code = 404, message = "Taxi with id not found"),
+            @ApiResponse(code = 409, message = "Taxi details supplied in request body conflict with another existing Taxi"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
+    public Response updateTaxi(
+            @ApiParam(value = "Id of Taxi to be updated", allowableValues = "range[0, infinity]", required = true)
+            @PathParam("id")
+                    long id,
+            @ApiParam(value = "JSON representation of Taxi object to be updated in the database", required = true)
+                    Taxi taxi) {
+        if (taxi == null || taxi.getId() == null) {
+            throw new RestServiceException("Invalid Taxi supplied in request body", Response.Status.BAD_REQUEST);
+        }
+
+        if (taxi.getId() != null && taxi.getId() != id) {
+            // The client attempted to update the read-only Id. This is not permitted.
+            Map<String, String> responseObj = new HashMap<>();
+            responseObj.put("id", "The Taxi ID in the request body must match that of the Booking being updated");
+            throw new RestServiceException("Taxi details supplied in request body conflict with another Taxi",
+                    responseObj, Response.Status.CONFLICT);
+        }
+
+        if (service.findById(taxi.getId()) == null) {
+            // Verify that the taxi exists. Return 404, if not present.
+            throw new RestServiceException("No Taxi with the id " + id + " was found!", Response.Status.NOT_FOUND);
+        }
+
+        Response.ResponseBuilder builder;
+
+        try {
+            // Apply the changes the Contact.
+            service.update(taxi);
+
+            // Create an OK Response and pass the taxi back in case it is needed.
+            builder = Response.ok(taxi);
+
+
+        } catch (ConstraintViolationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<>();
+
+            for (ConstraintViolation<?> violation : ce.getConstraintViolations()) {
+                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (ValidationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<String, String>() {{
+                put("BAD_REQ", ce.getMessage());
+            }};
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (Exception e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
         return builder.build();
     }
     /**

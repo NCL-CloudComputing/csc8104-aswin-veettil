@@ -1,5 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
+import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
 import org.jboss.quickstarts.wfk.booking.validate.TaxiValidator;
@@ -48,7 +49,20 @@ public class TaxiService {
         // Write the booking to the database.
         return crud.create(taxi);
     }
-
+    /**
+     * <p>Updates an existing Taxi object in the application database with the provided Taxi object.<p/>
+     *
+     * <p>Validates the data in the provided Taxi object using a TaxiValidator object.<p/>
+     *
+     * @param taxi The Taxi object to be passed as an update to the application database
+     * @return The Taxi object that has been successfully updated in the application database
+     */
+    public Taxi update(Taxi taxi) {
+        // Check to make sure the data fits with the parameters in the Taxi model and passes validation.
+        validator.validateTaxi(taxi);
+        // Either update the taxi or add it if it can't be found.
+        return crud.update(taxi);
+    }
     public Taxi delete(Long taxiId) throws RestServiceException {
         Taxi taxi = crud.findById(taxiId);
         if(taxi != null && taxi.getId() != null) {
