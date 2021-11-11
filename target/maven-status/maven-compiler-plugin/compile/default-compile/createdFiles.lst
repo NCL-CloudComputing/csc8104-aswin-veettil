@@ -1,6 +1,7 @@
 org/jboss/quickstarts/wfk/booking/service/CustomerService.class
 org/jboss/quickstarts/wfk/booking/model/TravelAgent.class
 org/jboss/quickstarts/wfk/contact/ContactRestService.class
+org/jboss/quickstarts/wfk/booking/validate/CustomerValidator.class
 org/jboss/quickstarts/wfk/booking/BookingRestService.class
 org/jboss/quickstarts/wfk/booking/service/TaxiService.class
 org/jboss/quickstarts/wfk/booking/model/Booking.class
@@ -9,6 +10,7 @@ org/jboss/quickstarts/wfk/util/JacksonConfig.class
 org/jboss/quickstarts/wfk/booking/validate/BookingValidator$1.class
 org/jboss/quickstarts/wfk/booking/CustomerRestService.class
 org/jboss/quickstarts/wfk/booking/repository/CustomerRepository.class
+org/jboss/quickstarts/wfk/booking/TaxiRestService$1.class
 org/jboss/quickstarts/wfk/area/AreaService.class
 org/jboss/quickstarts/wfk/booking/service/TravelAgentService$1.class
 org/jboss/quickstarts/wfk/ContactServiceApplication.class
@@ -23,6 +25,7 @@ org/jboss/quickstarts/wfk/util/RestServiceException.class
 org/jboss/quickstarts/wfk/contact/ContactValidator.class
 org/jboss/quickstarts/wfk/contact/UniqueEmailException.class
 org/jboss/quickstarts/wfk/area/InvalidAreaCodeException.class
+org/jboss/quickstarts/wfk/booking/validate/TaxiValidator.class
 org/jboss/quickstarts/wfk/contact/ContactRepository.class
 org/jboss/quickstarts/wfk/booking/service/BookingService.class
 org/jboss/quickstarts/wfk/contact/Contact_.class

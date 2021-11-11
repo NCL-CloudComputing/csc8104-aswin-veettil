@@ -24,15 +24,14 @@ public class Taxi implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 1, max = 7)
+    @Size(min = 7, max = 7)
     @Pattern(regexp = "[A-Za-z-0-9-']+", message = "Please use a valid registration number")
     @Column(name = "vehicle_reg_no")
     private String vehicleRegNo;
 
     @NotNull
-    @Pattern(regexp = "[0-9-']+", message = "Please specify a valid number of seats")
-    @Column(name = "noo_of_seats")
-    private String noOfSeats;
+    @Column(name = "no_of_seats")
+    private int noOfSeats;
 
     @JsonIgnore
     @OneToMany(mappedBy = "taxi", cascade = CascadeType.ALL)
@@ -57,11 +56,11 @@ public class Taxi implements Serializable {
         this.vehicleRegNo = vehicleRegNo;
     }
 
-    public String getNoOfSeats() {
+    public int getNoOfSeats() {
         return noOfSeats;
     }
 
-    public void setNoOfSeats(String noOfSeats) {
+    public void setNoOfSeats(int noOfSeats) {
         this.noOfSeats = noOfSeats;
     }
 

@@ -2,6 +2,7 @@ package org.jboss.quickstarts.wfk.booking.service;
 
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
+import org.jboss.quickstarts.wfk.booking.validate.TaxiValidator;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
@@ -10,6 +11,8 @@ import java.util.List;
 public class TaxiService {
     @Inject
     private TaxiRepository crud;
+    @Inject
+    private TaxiValidator validator;
 
     public TaxiService() {
 
@@ -41,6 +44,7 @@ public class TaxiService {
      * @throws Exception when proper data is not provided
      */
     public Taxi create(Taxi taxi) throws Exception {
+        validator.validateTaxi(taxi);
         // Write the booking to the database.
         return crud.create(taxi);
     }

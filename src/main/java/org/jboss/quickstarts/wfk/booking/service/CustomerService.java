@@ -2,6 +2,7 @@ package org.jboss.quickstarts.wfk.booking.service;
 
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
+import org.jboss.quickstarts.wfk.booking.validate.CustomerValidator;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
@@ -13,7 +14,8 @@ import java.util.logging.Logger;
 public class CustomerService {
     @Inject
     private CustomerRepository crud;
-
+    @Inject
+    private CustomerValidator validator;
     @Inject
     private @Named("logger") Logger log;
 
@@ -83,7 +85,7 @@ public class CustomerService {
         log.info("CustomerService.create() - Creating " + customer.getFirstName() + " " + customer.getLastName());
 
         // Check to make sure the data fits with the parameters in the Contact model and passes validation.
-        // validator.validateContact(customer);
+        validator.validateCustomer(customer);
 
         // Write the contact to the database.
         return crud.create(customer);

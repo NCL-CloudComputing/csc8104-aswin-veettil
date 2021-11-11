@@ -9,10 +9,15 @@ import org.jboss.resteasy.annotations.cache.Cache;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Path("/taxis")
@@ -84,7 +89,7 @@ public class TaxiRestService {
             @ApiResponse(code = 409, message = "Taxi supplied in request body conflicts with an existing Contact"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
-    public Response createBooking(
+    public Response createTaxi(
             @ApiParam(value = "JSON representation of Booking object to be added to the database", required = true)
                     Taxi taxi) throws Exception {
 
@@ -98,13 +103,25 @@ public class TaxiRestService {
         try {
             // Go add the new taxi.
             service.create(taxi);
-
             // Create a "Resource Created" 201 Response and pass the booking back in case it is needed.
             builder = Response.status(Response.Status.CREATED).entity(taxi);
+        }catch (ConstraintViolationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<>();
 
-
-        } catch (Exception ce) {
-            throw new Exception(ce.getMessage());
+            for (ConstraintViolation<?> violation : ce.getConstraintViolations()) {
+                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (ValidationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<String, String>() {{
+                put("BAD_REQ", ce.getMessage());
+            }};
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (Exception e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
 
         log.info("createTaxi completed. Booking = " + taxi.toString());
