@@ -28,6 +28,7 @@ org/jboss/quickstarts/wfk/area/InvalidAreaCodeException.class
 org/jboss/quickstarts/wfk/booking/validate/TaxiValidator.class
 org/jboss/quickstarts/wfk/contact/ContactRepository.class
 org/jboss/quickstarts/wfk/booking/service/BookingService.class
+org/jboss/quickstarts/wfk/booking/BookingRestService$2.class
 org/jboss/quickstarts/wfk/contact/Contact_.class
 org/jboss/quickstarts/wfk/booking/TravelAgentRestService.class
 org/jboss/quickstarts/wfk/util/Resources.class

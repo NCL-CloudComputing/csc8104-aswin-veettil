@@ -1,5 +1,8 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
+import org.jboss.quickstarts.wfk.area.Area;
+import org.jboss.quickstarts.wfk.area.AreaService;
+import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
@@ -7,10 +10,15 @@ import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
 import org.jboss.quickstarts.wfk.booking.validate.BookingValidator;
+import org.jboss.quickstarts.wfk.contact.Contact;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class BookingService {
@@ -62,6 +70,23 @@ public class BookingService {
         crud.create(booking);
         return booking;
 
+    }
+
+    /**
+     * <p>Updates an existing Booking object in the application database with the provided Booking object.<p/>
+     *
+     * <p>Validates the data in the provided Booking object using a BookingValidator object.<p/>
+     *
+     * @param booking The Booking object to be passed as an update to the application database
+     * @return The Booking object that has been successfully updated in the application database
+     * @throws ConstraintViolationException, ValidationException, Exception
+     */
+    public Booking update(Booking booking) {
+        // Check to make sure the data fits with the parameters in the Contact model and passes validation.
+        validator.validateBooking(booking);
+
+        // Either update the booking or add it if it can't be found.
+        return crud.update(booking);
     }
 
     public Booking delete(Long bookingId) throws RestServiceException {

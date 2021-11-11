@@ -2,6 +2,7 @@ package org.jboss.quickstarts.wfk.booking.repository;
 
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
+import org.jboss.quickstarts.wfk.contact.Contact;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
@@ -59,6 +60,24 @@ public class BookingRepository {
         // Write booking to the database.
         em.persist(booking);
 
+        return booking;
+    }
+
+    /**
+     * <p>Updates an existing Booking object in the application database with the provided Booking object.</p>
+     *
+     * <p>{@link javax.persistence.EntityManager#merge(Object) merge(Object)} creates a new instance of your entity,
+     * copies the state from the supplied entity, and makes the new copy managed. The instance you pass in will not be
+     * managed (any changes you make will not be part of the transaction - unless you call merge again).</p>
+     *
+     * <p>merge(Object) however must have an object with the @Id already generated.</p>
+     *
+     * @param booking The Booking object to be merged with an existing Booking
+     * @return The Booking that has been merged
+     */
+    public Booking update(Booking booking) {
+        // Either update the booking or add it if it can't be found.
+        em.merge(booking);
         return booking;
     }
 

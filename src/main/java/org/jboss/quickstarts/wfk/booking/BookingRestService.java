@@ -1,10 +1,8 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.*;
-import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.service.BookingService;
-import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.annotations.cache.Cache;
 
@@ -20,6 +18,7 @@ import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Path("/bookings")
@@ -134,6 +133,78 @@ public class BookingRestService {
         }
 
         log.info("createBooking completed. Booking = " + booking.toString());
+        return builder.build();
+    }
+    /**
+     * <p>Updates the booking with the ID provided in the database. Performs validation, and will return a JAX-RS response
+     * with either 200 (ok), or with a map of fields, and related errors.</p>
+     *
+     * @param booking The Booking object, constructed automatically from JSON input, to be <i>updated</i> via
+     * {@link BookingService#update(Booking)}
+     * @param id The long parameter value provided as the id of the Booking to be updated
+     * @return A Response indicating the outcome of the create operation
+     */
+    @PUT
+    @Path("/{id:[0-9]+}")
+    @ApiOperation(value = "Update a Booking in the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Booking updated successfully"),
+            @ApiResponse(code = 400, message = "Invalid Booking supplied in request body"),
+            @ApiResponse(code = 404, message = "Booking with id not found"),
+            @ApiResponse(code = 409, message = "Booking details supplied in request body conflict with another existing Booking"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
+    public Response updateContact(
+            @ApiParam(value = "Id of Booking to be updated", allowableValues = "range[0, infinity]", required = true)
+            @PathParam("id")
+                    long id,
+            @ApiParam(value = "JSON representation of Booking object to be updated in the database", required = true)
+                    Booking booking) {
+        if (booking == null || booking.getId() == null) {
+            throw new RestServiceException("Invalid Booking supplied in request body", Response.Status.BAD_REQUEST);
+        }
+
+        if (booking.getId() != null && booking.getId() != id) {
+            // The client attempted to update the read-only Id. This is not permitted.
+            Map<String, String> responseObj = new HashMap<>();
+            responseObj.put("id", "The Booking ID in the request body must match that of the Booking being updated");
+            throw new RestServiceException("Booking details supplied in request body conflict with another Booking",
+                    responseObj, Response.Status.CONFLICT);
+        }
+
+        if (service.findById(booking.getId()) == null) {
+            // Verify that the booking exists. Return 404, if not present.
+            throw new RestServiceException("No Booking with the id " + id + " was found!", Response.Status.NOT_FOUND);
+        }
+
+        Response.ResponseBuilder builder;
+
+        try {
+            // Apply the changes the Contact.
+            service.update(booking);
+
+            // Create an OK Response and pass the booking back in case it is needed.
+            builder = Response.ok(booking);
+
+
+        } catch (ConstraintViolationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<>();
+
+            for (ConstraintViolation<?> violation : ce.getConstraintViolations()) {
+                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (ValidationException ce) {
+            //Handle bean validation issues
+            Map<String, String> responseObj = new HashMap<String, String>() {{
+                put("BAD_REQ", ce.getMessage());
+            }};
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (Exception e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
         return builder.build();
     }
     /**
