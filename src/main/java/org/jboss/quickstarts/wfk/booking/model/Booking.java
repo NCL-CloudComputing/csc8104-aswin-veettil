@@ -28,19 +28,21 @@ public class Booking implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "taxi_id", referencedColumnName = "id")
-    @JsonProperty("taxiId")
+    @JsonProperty("taxi")
     private Taxi taxi;
 
+    @JsonIgnore
     @Column(name = "hotel_id")
     private Long hotel;
 
+    @JsonIgnore
     @Column(name = "flight_id")
     private Long flight;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @JsonProperty("customerId")
+    @JsonProperty("customer")
     private Customer customer;
 
     @JsonIgnore
@@ -82,6 +84,7 @@ public class Booking implements Serializable {
         return hotel;
     }
 
+    @JsonIgnore
     public void setHotelId(Long hotelId) {
         this.hotel = hotelId;
     }
@@ -90,11 +93,11 @@ public class Booking implements Serializable {
         return flight;
     }
 
+    @JsonIgnore
     public void setFlightId(Long flightId) {
         this.flight = flightId;
     }
 
-    @JsonIgnore
     public Long getTravelAgentId() {
         return travelAgentId;
     }
@@ -102,20 +105,6 @@ public class Booking implements Serializable {
     @JsonIgnore
     public void setTravelAgentId(Long travelAgentId) {
         this.travelAgentId = travelAgentId;
-    }
-
-    @JsonProperty("taxiId")
-    private void setTaxiObject(Long taxiId) {
-        Taxi taxi = new Taxi();
-        taxi.setId(taxiId);
-        this.setTaxi(taxi);
-    }
-
-    @JsonProperty("customerId")
-    private void setCustomerObject(Long customerId) {
-        Customer customer = new Customer();
-        customer.setId(customerId);
-        this.setCustomer(customer);
     }
 }
 
