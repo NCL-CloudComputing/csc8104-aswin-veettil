@@ -8,7 +8,8 @@ import java.io.Serializable;
 public class Flight implements Serializable {
     public static final String FLIGHT_BASE_URL = "http://csc8104-build-stream-c0079023-dev.apps.sandbox.x8i5.p1.openshiftapps.com/api/";
     private Long id;
-    private String departurePoint;
+    private String number;
+    private String departure;
     private String destination;
 
     public Long getId() {
@@ -19,12 +20,20 @@ public class Flight implements Serializable {
         this.id = id;
     }
 
-    public String getDeparturePoint() {
-        return departurePoint;
+    public String getNumber() {
+        return number;
     }
 
-    public void setDeparturePoint(String departurePoint) {
-        this.departurePoint = departurePoint;
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getDeparture() {
+        return departure;
+    }
+
+    public void setDeparture(String departure) {
+        this.departure = departure;
     }
 
     public String getDestination() {
