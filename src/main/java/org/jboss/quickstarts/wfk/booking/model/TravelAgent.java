@@ -2,8 +2,10 @@ package org.jboss.quickstarts.wfk.booking.model;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serializable;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TravelAgent {
+public class TravelAgent implements Serializable {
     public static final Long TRAVEL_AGENT_ID = 895265816L;
     public static final String EXT_TRAVEL_AGENT_EMAIL = "nclTravels@ncl.ac.uk";
 

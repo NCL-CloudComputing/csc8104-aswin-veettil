@@ -56,7 +56,7 @@ public class BookingValidator {
         }
 
         // Check the uniqueness of the email address
-        if (bookingAlreadyExists(booking.getTaxi().getId(), booking.getBookingDate(),booking.getId())) {
+        if (bookingAlreadyExists(booking.getTaxi().getId(), booking.getBookingDate(), booking.getId())) {
             throw new ValidationException("Booking already exists for the taxi on the given date");
         }
     }
@@ -81,8 +81,8 @@ public class BookingValidator {
         }};
         List<Booking> bookings = crud.findAllByCriteria(fieldNameToVal);
         for (Booking bkng : bookings) {
-            if(Objects.equals(bkng.getTaxi().getId(), taxiId)
-               && !bookingId.equals(bkng.getId())) {
+            if((Objects.equals(bkng.getTaxi().getId(), taxiId) && bookingId == null)
+               ||((Objects.equals(bkng.getTaxi().getId(), taxiId) && bookingId != null && !bookingId.equals(bkng.getId())))) {
                 return true;
             }
         }

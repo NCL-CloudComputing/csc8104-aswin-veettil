@@ -26,7 +26,6 @@ public class TravelAgentService {
 
     private ResteasyClient client;
 
-    private static final String HOTEL_BASE_URL = "http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com";
     private static final String FLIGHT_BASE_URL = "http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com";
 
     public TravelAgentService() {

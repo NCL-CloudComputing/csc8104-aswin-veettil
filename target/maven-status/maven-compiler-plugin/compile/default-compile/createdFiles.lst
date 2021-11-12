@@ -8,6 +8,7 @@ org/jboss/quickstarts/wfk/area/AreaService.class
 org/jboss/quickstarts/wfk/booking/service/TravelAgentService$1.class
 org/jboss/quickstarts/wfk/util/ErrorMessage.class
 org/jboss/quickstarts/wfk/booking/BookingRestService$1.class
+org/jboss/quickstarts/wfk/booking/HotelRestService.class
 org/jboss/quickstarts/wfk/util/RestServiceExceptionHandler.class
 org/jboss/quickstarts/wfk/booking/repository/TaxiRepository.class
 org/jboss/quickstarts/wfk/booking/model/Customer_.class
@@ -22,6 +23,7 @@ org/jboss/quickstarts/wfk/booking/model/Taxi.class
 org/jboss/quickstarts/wfk/contact/Contact.class
 org/jboss/quickstarts/wfk/booking/model/Booking_.class
 org/jboss/quickstarts/wfk/booking/repository/BookingRepository.class
+org/jboss/quickstarts/wfk/booking/model/Hotel.class
 org/jboss/quickstarts/wfk/booking/service/CustomerService.class
 org/jboss/quickstarts/wfk/contact/ContactRestService.class
 org/jboss/quickstarts/wfk/booking/validate/CustomerValidator.class
@@ -29,6 +31,7 @@ org/jboss/quickstarts/wfk/booking/BookingRestService.class
 org/jboss/quickstarts/wfk/booking/model/Booking.class
 org/jboss/quickstarts/wfk/util/ApiOriginFilter.class
 org/jboss/quickstarts/wfk/booking/CustomerRestService.class
+org/jboss/quickstarts/wfk/booking/service/HotelService.class
 org/jboss/quickstarts/wfk/ContactServiceApplication.class
 org/jboss/quickstarts/wfk/booking/model/Taxi_.class
 org/jboss/quickstarts/wfk/booking/model/GuestBooking.class

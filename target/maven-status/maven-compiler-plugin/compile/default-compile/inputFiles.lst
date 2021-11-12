@@ -6,6 +6,7 @@
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/contact/UniqueEmailException.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/area/Area.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/Customer.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/service/HotelService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/contact/ContactRestService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/repository/CustomerRepository.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/TravelAgent.java
@@ -17,7 +18,9 @@
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/Taxi.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/TravelAgentRestService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/util/ErrorMessage.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/HotelRestService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/service/TaxiService.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/Hotel.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/validate/CustomerValidator.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/service/CustomerService.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/validate/TaxiValidator.java
