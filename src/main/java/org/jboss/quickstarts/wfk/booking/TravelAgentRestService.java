@@ -47,8 +47,12 @@ public class TravelAgentRestService {
         }
 
         Response.ResponseBuilder builder;
-        service.create(travelAgentBooking);
-        builder = Response.status(Response.Status.CREATED).entity(travelAgentBooking);
+        try {
+            service.create(travelAgentBooking);
+            builder = Response.status(Response.Status.CREATED).entity(travelAgentBooking);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
         return builder.build();
     }
 }

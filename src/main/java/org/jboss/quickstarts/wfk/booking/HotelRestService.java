@@ -1,15 +1,13 @@
 package org.jboss.quickstarts.wfk.booking;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.annotations.Api;
-import org.jboss.quickstarts.wfk.booking.model.Hotel;
-import org.jboss.quickstarts.wfk.booking.service.HotelService;
+import org.jboss.quickstarts.wfk.booking.model.external.hotel.Hotel;
+import org.jboss.quickstarts.wfk.booking.service.external.HotelService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.ejb.Stateless;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

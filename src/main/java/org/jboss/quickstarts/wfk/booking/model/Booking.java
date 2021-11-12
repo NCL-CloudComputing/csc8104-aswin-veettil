@@ -33,13 +33,11 @@ public class Booking implements Serializable {
     @JsonIdentityReference(alwaysAsId = true)
     private Taxi taxi;
 
-    @JsonIgnore
     @Column(name = "hotel_id")
-    private Long hotel;
+    private Long hotelId;
 
-    @JsonIgnore
     @Column(name = "flight_id")
-    private Long flight;
+    private Long flightId;
 
     @NotNull
     @ManyToOne
@@ -51,6 +49,12 @@ public class Booking implements Serializable {
 
     @JsonIgnore
     private Long travelAgentId;
+
+    @JsonIgnore
+    private Long hotelBookingId;
+
+    @JsonIgnore
+    private Long flightBookingId;
 
     private Long taxiId;
 
@@ -89,21 +93,19 @@ public class Booking implements Serializable {
     }
 
     public Long getHotelId() {
-        return hotel;
+        return hotelId;
     }
 
-    @JsonIgnore
     public void setHotelId(Long hotelId) {
-        this.hotel = hotelId;
+        this.hotelId = hotelId;
     }
 
     public Long getFlightId() {
-        return flight;
+        return flightId;
     }
 
-    @JsonIgnore
     public void setFlightId(Long flightId) {
-        this.flight = flightId;
+        this.flightId = flightId;
     }
 
     public Long getTravelAgentId() {
@@ -135,6 +137,24 @@ public class Booking implements Serializable {
 
     public Long getCustomerId() {
         return this.customerId;
+    }
+
+    public Long getHotelBookingId() {
+        return hotelBookingId;
+    }
+
+    @JsonIgnore
+    public void setHotelBookingId(Long hotelBookingId) {
+        this.hotelBookingId = hotelBookingId;
+    }
+
+    public Long getFlightBookingId() {
+        return flightBookingId;
+    }
+
+    @JsonIgnore
+    public void setFlightBookingId(Long flightBookingId) {
+        this.flightBookingId = flightBookingId;
     }
 }
 

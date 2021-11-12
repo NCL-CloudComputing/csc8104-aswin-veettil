@@ -1,16 +1,18 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
-import org.jboss.quickstarts.wfk.booking.model.Customer;
-import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.model.TravelAgent;
+import org.jboss.quickstarts.wfk.booking.model.external.flight.Flight;
+import org.jboss.quickstarts.wfk.booking.model.external.flight.FlightBooking;
+import org.jboss.quickstarts.wfk.booking.model.external.flight.FlightCustomer;
+import org.jboss.quickstarts.wfk.booking.model.external.flight.FlightGuestBooking;
+import org.jboss.quickstarts.wfk.booking.model.external.hotel.Hotel;
+import org.jboss.quickstarts.wfk.booking.model.external.hotel.HotelGuestBooking;
 import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
-import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
-import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
-import org.jboss.quickstarts.wfk.util.RestServiceException;
+import org.jboss.quickstarts.wfk.booking.service.external.GuestBookingService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -25,8 +27,6 @@ public class TravelAgentService {
     private BookingRepository bookingCrud;
 
     private ResteasyClient client;
-
-    private static final String FLIGHT_BASE_URL = "http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com";
 
     public TravelAgentService() {
         // Create client service instance to make REST requests to upstream service
@@ -56,6 +56,33 @@ public class TravelAgentService {
     public TravelAgent create(TravelAgent travelAgent) throws Exception {
         //TODO: add logic for flight and hotel
         Booking booking = travelAgent.getBooking();
+        HotelGuestBooking hGb = new HotelGuestBooking();
+        hGb.setHotelId(String.valueOf(booking.getHotelId()));
+        hGb.setStartDate(booking.getBookingDate());
+        //Create client service instance to make REST requests to upstream service
+        ResteasyWebTarget hotelTarget = client.target(Hotel.HOTEL_BASE_URL);
+        GuestBookingService hotelService = hotelTarget.proxy(GuestBookingService.class);
+        HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
+                                               TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
+        booking.setHotelBookingId(hotelResponse.getId());
+        booking.setHotelId(Long.parseLong(hotelResponse.getHotelId()));
+
+        FlightCustomer travelAgentCust = new FlightCustomer();
+        travelAgentCust.setName(TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME + " " +TravelAgent.EXT_TRAVEL_AGENT_LASTNAME);
+        travelAgentCust.setEmail(TravelAgent.EXT_TRAVEL_AGENT_EMAIL);
+        travelAgentCust.setPhoneNumber(TravelAgent.EXT_TRAVEL_AGENT_PHNO);
+        FlightBooking fBooking = new FlightBooking();
+        fBooking.setFlightId(booking.getFlightId());
+        fBooking.setDate(booking.getBookingDate());
+        FlightGuestBooking fGb = new FlightGuestBooking();
+        fGb.setBooking(fBooking);
+        fGb.setCustomer(travelAgentCust);
+
+        ResteasyWebTarget flightTarget = client.target(Flight.FLIGHT_BASE_URL);
+        GuestBookingService flightService = flightTarget.proxy(GuestBookingService.class);
+        FlightGuestBooking flightResponse = flightService.createBooking(fGb);
+        booking.setFlightBookingId(flightResponse.getBooking().getId());
+        booking.setFlightId(flightResponse.getBooking().getFlightId());
 
         booking.setTravelAgentId(TravelAgent.TRAVEL_AGENT_ID);
         bookingSvc.create(booking);

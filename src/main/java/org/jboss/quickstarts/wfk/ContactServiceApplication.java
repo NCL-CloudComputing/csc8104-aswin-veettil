@@ -74,6 +74,7 @@ public class ContactServiceApplication extends Application {
         services.add(TravelAgentRestService.class);
 
         services.add(HotelRestService.class);
+        services.add(FlightRestService.class);
         //Do not edit below
         services.add(RestServiceExceptionHandler.class);
         services.add(io.swagger.jaxrs.listing.ApiListingResource.class);
