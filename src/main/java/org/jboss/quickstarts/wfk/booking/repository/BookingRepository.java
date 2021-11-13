@@ -1,9 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.repository;
 
 import org.jboss.quickstarts.wfk.booking.model.Booking;
-import org.jboss.quickstarts.wfk.booking.model.Taxi;
-import org.jboss.quickstarts.wfk.contact.Contact;
-import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,11 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class BookingRepository {

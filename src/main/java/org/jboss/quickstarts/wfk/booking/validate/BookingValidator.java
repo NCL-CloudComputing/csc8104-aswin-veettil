@@ -1,12 +1,11 @@
 package org.jboss.quickstarts.wfk.booking.validate;
 
+import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
-import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
-
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;

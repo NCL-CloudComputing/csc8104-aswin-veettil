@@ -1,7 +1,8 @@
 package org.jboss.quickstarts.wfk.booking.model.external.hotel;
 
-import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Hotel implements Serializable {

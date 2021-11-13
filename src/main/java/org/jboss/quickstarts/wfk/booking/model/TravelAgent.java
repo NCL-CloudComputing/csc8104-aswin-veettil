@@ -1,6 +1,6 @@
 package org.jboss.quickstarts.wfk.booking.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 

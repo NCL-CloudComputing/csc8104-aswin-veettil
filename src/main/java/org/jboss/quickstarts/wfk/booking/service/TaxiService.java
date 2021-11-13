@@ -1,6 +1,5 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
-import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
 import org.jboss.quickstarts.wfk.booking.validate.TaxiValidator;

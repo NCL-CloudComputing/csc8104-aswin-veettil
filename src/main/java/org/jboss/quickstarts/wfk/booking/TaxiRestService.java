@@ -1,9 +1,7 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.*;
-import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
-import org.jboss.quickstarts.wfk.booking.service.BookingService;
 import org.jboss.quickstarts.wfk.booking.service.TaxiService;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.annotations.cache.Cache;

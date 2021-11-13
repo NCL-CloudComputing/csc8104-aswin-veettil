@@ -16,7 +16,6 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
@@ -61,34 +60,50 @@ public class TravelAgentService {
         ResteasyWebTarget flightTarget = client.target(Flight.FLIGHT_BASE_URL);
         GuestBookingService flightService = flightTarget.proxy(GuestBookingService.class);
 
-        try {
-            HotelGuestBooking hGb = createHotelGuestBookingPayload(booking);
-            HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
-                    TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
-            booking.setHotelBookingId(hotelResponse.getId());
-            booking.setHotelId(Long.parseLong(hotelResponse.getHotelId()));
-        } catch (Exception e) {
-            throw new RestServiceException("Error during creation of hotel booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+        if(booking.getHotelId() != null) {
+            createHotelBooking(booking, hotelService);
         }
-        try {
-            FlightGuestBooking fGb = createFlightGuestBookingPayload(booking);
-            FlightBooking flightResponse = flightService.createBooking(fGb);
-            booking.setFlightBookingId(flightResponse.getId());
-            booking.setFlightId(flightResponse.getFlightId());
-        } catch (Exception e) {
-            hotelService.deleteHotelBooking(booking.getHotelBookingId());
-            throw new RestServiceException("Error during creation of flight booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+        if(booking.getFlightId() != null) {
+            createFlightBooking(booking, hotelService, flightService);
         }
 
         booking.setTravelAgentId(TravelAgent.TRAVEL_AGENT_ID);
         try {
             bookingSvc.create(booking);
         } catch (Exception e) {
-            hotelService.deleteHotelBooking(booking.getHotelBookingId());
-            flightService.deleteFlightBooking(booking.getHotelBookingId());
+            if(booking.getHotelId() != null) {
+                hotelService.deleteHotelBooking(booking.getHotelBookingId());
+            }
+            if(booking.getFlightId() != null) {
+                flightService.deleteFlightBooking(booking.getHotelBookingId());
+            }
             throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
         return travelAgent;
+    }
+
+    private void createFlightBooking(Booking booking, GuestBookingService hotelService, GuestBookingService flightService) {
+        try {
+            FlightGuestBooking fGb = createFlightGuestBookingPayload(booking);
+            FlightBooking flightResponse = flightService.createBooking(fGb);
+            booking.setFlightBookingId(flightResponse.getId());
+        } catch (Exception e) {
+            if(booking.getHotelId() != null) {
+                hotelService.deleteHotelBooking(booking.getHotelBookingId());
+            }
+            throw new RestServiceException("Error during creation of flight booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+        }
+    }
+
+    private void createHotelBooking(Booking booking, GuestBookingService hotelService) {
+        try {
+            HotelGuestBooking hGb = createHotelGuestBookingPayload(booking);
+            HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
+                    TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
+            booking.setHotelBookingId(hotelResponse.getId());
+        } catch (Exception e) {
+            throw new RestServiceException("Error during creation of hotel booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+        }
     }
 
     private HotelGuestBooking createHotelGuestBookingPayload(Booking booking) {

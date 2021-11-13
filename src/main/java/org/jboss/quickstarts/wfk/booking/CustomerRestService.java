@@ -1,11 +1,8 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.*;
-import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.service.CustomerService;
-import org.jboss.quickstarts.wfk.contact.Contact;
-import org.jboss.quickstarts.wfk.contact.ContactService;
 import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -43,14 +40,14 @@ public class CustomerRestService {
      *
      * <p>The url may optionally include query parameters specifying a Customer's name</p>
      *
-     * <p>Examples: <pre>GET api/contacts?firstname=John</pre>, <pre>GET api/customers?firstname=John&lastname=Smith</pre></p>
+     * <p>Examples: <pre>GET api/customers?firstname=John</pre>, <pre>GET api/customers?firstname=John&lastname=Smith</pre></p>
      *
      * @return A Response containing a list of Customers
      */
     @GET
     @ApiOperation(value = "Fetch all Customers", notes = "Returns a JSON array of all stored Customer objects.")
     public Response retrieveAllCustomers(@QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
-        //Create an empty collection to contain the intersection of Contacts to be returned
+        //Create an empty collection to contain the intersection of Customers to be returned
         List<Customer> customers;
 
         if(firstname == null && lastname == null) {
@@ -97,8 +94,8 @@ public class CustomerRestService {
         try {
             customer = service.findByEmail(email);
         } catch (NoResultException e) {
-            // Verify that the contact exists. Return 404, if not present.
-            throw new RestServiceException("No Contact with the email " + email + " was found!", Response.Status.NOT_FOUND);
+            // Verify that the customer exists. Return 404, if not present.
+            throw new RestServiceException("No Customer with the email " + email + " was found!", Response.Status.NOT_FOUND);
         }
         return Response.ok(customer).build();
     }
@@ -113,24 +110,24 @@ public class CustomerRestService {
     @Cache
     @Path("/{id:[0-9]+}")
     @ApiOperation(
-            value = "Fetch a Contact by id",
-            notes = "Returns a JSON representation of the Contact object with the provided id."
+            value = "Fetch a Customer by id",
+            notes = "Returns a JSON representation of the Customer object with the provided id."
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message ="Contact found"),
-            @ApiResponse(code = 404, message = "Contact with id not found")
+            @ApiResponse(code = 200, message ="Customer found"),
+            @ApiResponse(code = 404, message = "Customer with id not found")
     })
     public Response retrieveCustomerById(
-            @ApiParam(value = "Id of Contact to be fetched", allowableValues = "range[0, infinity]", required = true)
+            @ApiParam(value = "Id of Customer to be fetched", allowableValues = "range[0, infinity]", required = true)
             @PathParam("id")
                     long id) {
 
         Customer customer = service.findById(id);
         if (customer == null) {
-            // Verify that the contact exists. Return 404, if not present.
-            throw new RestServiceException("No Contact with the id " + id + " was found!", Response.Status.NOT_FOUND);
+            // Verify that the Customer exists. Return 404, if not present.
+            throw new RestServiceException("No Customer with the id " + id + " was found!", Response.Status.NOT_FOUND);
         }
-        log.info("findById " + id + ": found Contact = " + customer.toString());
+        log.info("findById " + id + ": found Customer = " + customer.toString());
 
         return Response.ok(customer).build();
     }
@@ -145,11 +142,11 @@ public class CustomerRestService {
      */
     @SuppressWarnings("unused")
     @POST
-    @ApiOperation(value = "Add a new v to the database")
+    @ApiOperation(value = "Add a new Customer to the database")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "customer created successfully."),
             @ApiResponse(code = 400, message = "Invalid customer supplied in request body"),
-            @ApiResponse(code = 409, message = "customer supplied in request body conflicts with an existing Contact"),
+            @ApiResponse(code = 409, message = "customer supplied in request body conflicts with an existing Customer"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
     public Response createCustomer(
@@ -190,7 +187,6 @@ public class CustomerRestService {
             throw new RestServiceException(e);
         }
 
-        log.info("createContact completed. Contact = " + customer.toString());
         return builder.build();
     }
     /**
@@ -216,18 +212,18 @@ public class CustomerRestService {
             @ApiParam(value = "Id of Customer to be updated", allowableValues = "range[0, infinity]", required = true)
             @PathParam("id")
                     long id,
-            @ApiParam(value = "JSON representation of Contact object to be updated in the database", required = true)
+            @ApiParam(value = "JSON representation of Customer object to be updated in the database", required = true)
                     Customer customer) {
 
         if (customer == null || customer.getId() == null) {
-            throw new RestServiceException("Invalid Contact supplied in request body", Response.Status.BAD_REQUEST);
+            throw new RestServiceException("Invalid Customer supplied in request body", Response.Status.BAD_REQUEST);
         }
 
         if (customer.getId() != null && customer.getId() != id) {
             // The client attempted to update the read-only Id. This is not permitted.
             Map<String, String> responseObj = new HashMap<>();
             responseObj.put("id", "The Customer ID in the request body must match that of the Customer being updated");
-            throw new RestServiceException("Customer details supplied in request body conflict with another Contact",
+            throw new RestServiceException("Customer details supplied in request body conflict with another Customer",
                     responseObj, Response.Status.CONFLICT);
         }
 
@@ -239,7 +235,7 @@ public class CustomerRestService {
         Response.ResponseBuilder builder;
 
         try {
-            // Apply the changes the Contact.
+            // Apply the changes the Customer.
             service.update(customer);
             // Create an OK Response and pass the customer back in case it is needed.
             builder = Response.ok(customer);

@@ -1,10 +1,7 @@
 package org.jboss.quickstarts.wfk.booking.validate;
 
-import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
-import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
-import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;

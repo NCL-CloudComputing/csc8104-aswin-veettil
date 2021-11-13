@@ -1,21 +1,13 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
-import org.jboss.quickstarts.wfk.area.Area;
-import org.jboss.quickstarts.wfk.area.AreaService;
-import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
 import org.jboss.quickstarts.wfk.booking.validate.CustomerValidator;
-import org.jboss.quickstarts.wfk.contact.Contact;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.Logger;
 
