@@ -24,18 +24,33 @@
 
         <!-- Form group for First Name input and associated error messages. -->
         <!-- ng-class conditionally applies a class string (e.g 'has-error'), dependent upon a boolean expression. -->
-        <div class="form-group" ng-class="{'has-error': customerForm.name.$invalid}">
-            <label for="name">Name:</label>
+        <div class="form-group" ng-class="{'has-error': customerForm.firstName.$invalid}">
+            <label for="firstName">FirstName:</label>
             <!-- ng-pattern validates the contents of an input against a provided regexp. -->
-            <input type="text" name="name" class="form-control"  id="name" placeholder="Enter a name."
-                   ng-model="customer.name" ng-pattern="/^[A-Za-z-']+[\s]?[A-Za-z-']*$/" required>
+            <input type="text" name="firstName" class="form-control"  id="firstName" placeholder="Enter first name."
+                   ng-model="customer.firstName" ng-pattern="/^[A-Za-z-']+[\s]?[A-Za-z-']*$/" required>
             <!-- Appropriate error messages, to be displayed as required. -->
             <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
-            <p class="help-block" id="name-required" ng-show="customerForm.name.$dirty && customerForm.name.$error.required">
-                A name is required.
+            <p class="help-block" id="firstName-required" ng-show="customerForm.firstName.$dirty && customerForm.firstName.$error.required">
+                First Name is required.
             </p>
-            <p class="help-block" id="name-format" ng-show="customerForm.name.$dirty && customerForm.name.$error.pattern">
-                Please provide a name without numbers or special characters.
+            <p class="help-block" id="name-format" ng-show="customerForm.firstName.$dirty && customerForm.firstName.$error.pattern">
+                Please provide first name without numbers or special characters.
+            </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error': customerForm.lastName.$invalid}">
+            <label for="lastName">LastName:</label>
+            <!-- ng-pattern validates the contents of an input against a provided regexp. -->
+            <input type="text" name="lastName" class="form-control"  id="lastName" placeholder="Enter last name."
+                   ng-model="customer.lastName" ng-pattern="/^[A-Za-z-']+[\s]?[A-Za-z-']*$/" required>
+            <!-- Appropriate error messages, to be displayed as required. -->
+            <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
+            <p class="help-block" id="lastName-required" ng-show="customerForm.lastName.$dirty && customerForm.lastName.$error.required">
+                Last Name is required.
+            </p>
+            <p class="help-block" id="lastName-format" ng-show="customerForm.lastName.$dirty && customerForm.lastName.$error.pattern">
+                Please provide a last name without numbers or special characters.
             </p>
         </div>
 
@@ -45,7 +60,7 @@
             <label for="phoneNumber">Phone:</label>
             <!-- ng-pattern validates the contents of an input against a provided regexp. -->
             <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" placeholder="(201) 000-1111"
-                   ng-model="customer.phoneNumber" ng-pattern="/^\([2-9][0-8][0-9]\)\s?[0-9]{3}\-[0-9]{4}$/" required>
+                   ng-model="customer.phoneNumber" required>
             <!-- Appropriate error messages, to be displayed as required. -->
             <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
             <p class="help-block" id="phoneNumber-required" ng-show="customerForm.phoneNumber.$dirty && customerForm.phoneNumber.$error.required">

@@ -41,22 +41,21 @@
         // Commodity entities from your TravelAgent API
 
         // EDIT ==>
-
-        $http.get('api/travel/taxis')
+        $http.get('http://localhost:8080/api/taxis')
             .success(function(data) {
                 $scope.taxis = data;
             })
             .error(function() {
                 $scope.messageService.push('danger', '/taxis resource unavailable');
             });
-        $http.get('api/travel/hotels')
+        $http.get('http://localhost:8080/api/hotels')
             .success(function(data) {
                 $scope.hotels = data;
             })
             .error(function() {
                     $scope.messageService.push('danger', '/hotels resource unavailable');
             });
-        $http.get('api/travel/flights')
+        $http.get('http://localhost:8080/api/flights')
             .success(function(data) {
                 $scope.flights = data;
             })
@@ -74,8 +73,16 @@
         // using those details provided and displaying any error messages
         $scope.addBooking = function() {
             $scope.messageService.clear();
-
-            $scope.bookingService.save($scope.booking,
+            var req = {
+                "booking": {
+                    "bookingDate": $scope.booking.bookingDate,
+                    "taxiId": $scope.booking.taxi.id,
+                    "hotelId": $scope.booking.hotel.id,
+                    "flightId": $scope.booking.flight.id,
+                    "customerId": $scope.booking.customer.id
+                }
+            }
+            $scope.bookingService.save(req,
                 //Successful query
                 function(data) {
 
@@ -83,7 +90,7 @@
                     $scope.bookingService.data.push(data);
 
                     // Clear the form
-                    $scope.reset();
+                    $scope.data = {};
 
                     //Add success message
                     $scope.messageService.push('success', 'Booking made');

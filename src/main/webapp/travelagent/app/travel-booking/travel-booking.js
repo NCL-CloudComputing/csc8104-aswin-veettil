@@ -33,7 +33,7 @@
         // EDIT ==>
 
         var TravelBooking = $resource(
-            'api/travel/bookings/:bookingId',
+            'http://localhost:8080/api/travelAgent/bookings/:bookingId',
             {bookingId: '@id'}
         );
 

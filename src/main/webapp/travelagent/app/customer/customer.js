@@ -33,7 +33,7 @@
         // EDIT ==>
 
         var Customer = $resource(
-            'api/travel/customers/:customerId',
+            'http://localhost:8080/api/customers/:customerId',
             {customerId: '@id'},
             {
                 'update': {method: 'PUT'}

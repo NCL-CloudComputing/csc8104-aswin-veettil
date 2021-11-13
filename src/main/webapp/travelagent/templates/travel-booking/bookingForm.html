@@ -30,7 +30,7 @@
             <div class="form-group" ng-class="{'has-error': bookingForm.customer.$invalid}">
                 <label for="customer">Customer:</label>
                 <!-- Dropdown with Customer list -->
-                <select id="customer" ng-model="booking.customer" ng-options="customer.name for customer in customerService.data"></select>
+                <select id="customer" ng-model="booking.customer" ng-options="customer.id for customer in customerService.data"></select>
                 <!-- Appropriate error messages, to be displayed as required. -->
                 <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
                 <p class="help-block" id="customer-required" ng-show="bookingForm.customer.$dirty && bookingForm.customer.$error.required">
@@ -43,7 +43,7 @@
             <div class="form-group" ng-class="{'has-error': bookingForm.taxi.$invalid}">
                 <label for="taxi">Taxi:</label>
                 <!-- Dropdown with Taxi list -->
-                <select id="taxi" ng-model="booking.taxi" ng-options="taxi.reg for taxi in taxis"></select>
+                <select id="taxi" ng-model="booking.taxi" ng-options="taxi.id for taxi in taxis"></select>
                 <!-- Appropriate error messages, to be displayed as required. -->
                 <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
                 <p class="help-block" id="taxi-required" ng-show="bookingForm.taxi.$dirty && bookingForm.taxi.$error.required">
@@ -56,7 +56,7 @@
             <div class="form-group" ng-class="{'has-error': bookingForm.flight.$invalid}">
                 <label for="flight">Flight:</label>
                 <!-- Dropdown with Flight list -->
-                <select id="flight" ng-model="booking.flight" ng-options="flight.number for flight in flights"></select>
+                <select id="flight" ng-model="booking.flight" ng-options="flight.id for flight in flights"></select>
                 <!-- Appropriate error messages, to be displayed as required. -->
                 <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
                 <p class="help-block" id="flight-required" ng-show="bookingForm.flight.$dirty && bookingForm.flight.$error.required">
@@ -69,7 +69,7 @@
             <div class="form-group" ng-class="{'has-error': bookingForm.hotel.$invalid}">
                 <label for="hotel">Hotel:</label>
                 <!-- Dropdown with Hotel list -->
-                <select id="hotel" ng-model="booking.hotel" ng-options="hotel.name for hotel in hotels"></select>
+                <select id="hotel" ng-model="booking.hotel" ng-options="hotel.id for hotel in hotels"></select>
                 <!-- Appropriate error messages, to be displayed as required. -->
                 <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
                 <p class="help-block" id="hotel-required" ng-show="bookingForm.hotel.$dirty && bookingForm.hotel.$error.required">
