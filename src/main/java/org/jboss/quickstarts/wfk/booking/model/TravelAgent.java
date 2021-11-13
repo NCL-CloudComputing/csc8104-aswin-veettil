@@ -7,7 +7,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TravelAgent implements Serializable {
     public static final Long TRAVEL_AGENT_ID = 895265816L;
-    public static final String EXT_TRAVEL_AGENT_EMAIL = "nclTravels@ncl.ac.uk";
+    public static final String EXT_TRAVEL_AGENT_EMAIL = "ncltravels@ncl.ac.uk";
     public static final String EXT_TRAVEL_AGENT_PHNO = "06765767659";
     public static final String EXT_TRAVEL_AGENT_FIRSTNAME = "Travel";
     public static final String EXT_TRAVEL_AGENT_LASTNAME = "Agent";

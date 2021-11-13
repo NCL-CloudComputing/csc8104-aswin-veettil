@@ -10,12 +10,14 @@ import org.jboss.quickstarts.wfk.booking.model.external.hotel.Hotel;
 import org.jboss.quickstarts.wfk.booking.model.external.hotel.HotelGuestBooking;
 import org.jboss.quickstarts.wfk.booking.repository.BookingRepository;
 import org.jboss.quickstarts.wfk.booking.service.external.GuestBookingService;
+import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +25,6 @@ import java.util.Map;
 public class TravelAgentService {
     @Inject
     private BookingService bookingSvc;
-    @Inject
-    private BookingRepository bookingCrud;
 
     private ResteasyClient client;
 
@@ -38,11 +38,10 @@ public class TravelAgentService {
      * @return List of TravelAgent objects
      */
     public List<Booking> findAll() {
-        //TODO: Change to booking svc
         Map<String, Object> fieldNameToVal = new HashMap<String, Object>() {{
             put("travelAgentId", TravelAgent.TRAVEL_AGENT_ID);
         }};
-        return bookingCrud.findAllByCriteria(fieldNameToVal);
+        return bookingSvc.findAllByCriteria(fieldNameToVal);
     }
 
     /**
@@ -51,24 +50,57 @@ public class TravelAgentService {
      *
      * @param travelAgent The Booking object to be written to the database using a {@link BookingRepository} object
      * @return The Booking object that has been successfully written to the application database
-     * @throws ConstraintViolationException, ValidationException, Exception
+     * @throws RestServiceException when service throws error
      */
-    public TravelAgent create(TravelAgent travelAgent) throws Exception {
-        //TODO: add logic for flight and hotel
+    public TravelAgent create(TravelAgent travelAgent) throws RestServiceException {
         Booking booking = travelAgent.getBooking();
+
+        ResteasyWebTarget hotelTarget = client.target(Hotel.HOTEL_BASE_URL);
+        GuestBookingService hotelService = hotelTarget.proxy(GuestBookingService.class);
+
+        ResteasyWebTarget flightTarget = client.target(Flight.FLIGHT_BASE_URL);
+        GuestBookingService flightService = flightTarget.proxy(GuestBookingService.class);
+
+        try {
+            HotelGuestBooking hGb = createHotelGuestBookingPayload(booking);
+            HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
+                    TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
+            booking.setHotelBookingId(hotelResponse.getId());
+            booking.setHotelId(Long.parseLong(hotelResponse.getHotelId()));
+        } catch (Exception e) {
+            throw new RestServiceException("Error during creation of hotel booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+        }
+        try {
+            FlightGuestBooking fGb = createFlightGuestBookingPayload(booking);
+            FlightBooking flightResponse = flightService.createBooking(fGb);
+            booking.setFlightBookingId(flightResponse.getId());
+            booking.setFlightId(flightResponse.getFlightId());
+        } catch (Exception e) {
+            hotelService.deleteHotelBooking(booking.getHotelBookingId());
+            throw new RestServiceException("Error during creation of flight booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+        }
+
+        booking.setTravelAgentId(TravelAgent.TRAVEL_AGENT_ID);
+        try {
+            bookingSvc.create(booking);
+        } catch (Exception e) {
+            hotelService.deleteHotelBooking(booking.getHotelBookingId());
+            flightService.deleteFlightBooking(booking.getHotelBookingId());
+            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
+        return travelAgent;
+    }
+
+    private HotelGuestBooking createHotelGuestBookingPayload(Booking booking) {
         HotelGuestBooking hGb = new HotelGuestBooking();
         hGb.setHotelId(String.valueOf(booking.getHotelId()));
         hGb.setStartDate(booking.getBookingDate());
-        //Create client service instance to make REST requests to upstream service
-        ResteasyWebTarget hotelTarget = client.target(Hotel.HOTEL_BASE_URL);
-        GuestBookingService hotelService = hotelTarget.proxy(GuestBookingService.class);
-        HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
-                                               TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
-        booking.setHotelBookingId(hotelResponse.getId());
-        booking.setHotelId(Long.parseLong(hotelResponse.getHotelId()));
+        return hGb;
+    }
 
+    private FlightGuestBooking createFlightGuestBookingPayload(Booking booking) {
         FlightCustomer travelAgentCust = new FlightCustomer();
-        travelAgentCust.setName(TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME + " " +TravelAgent.EXT_TRAVEL_AGENT_LASTNAME);
+        travelAgentCust.setName(TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME + " " + TravelAgent.EXT_TRAVEL_AGENT_LASTNAME);
         travelAgentCust.setEmail(TravelAgent.EXT_TRAVEL_AGENT_EMAIL);
         travelAgentCust.setPhoneNumber(TravelAgent.EXT_TRAVEL_AGENT_PHNO);
         FlightBooking fBooking = new FlightBooking();
@@ -77,25 +109,6 @@ public class TravelAgentService {
         FlightGuestBooking fGb = new FlightGuestBooking();
         fGb.setBooking(fBooking);
         fGb.setCustomer(travelAgentCust);
-
-        ResteasyWebTarget flightTarget = client.target(Flight.FLIGHT_BASE_URL);
-        GuestBookingService flightService = flightTarget.proxy(GuestBookingService.class);
-        FlightGuestBooking flightResponse = flightService.createBooking(fGb);
-        booking.setFlightBookingId(flightResponse.getBooking().getId());
-        booking.setFlightId(flightResponse.getBooking().getFlightId());
-
-        booking.setTravelAgentId(TravelAgent.TRAVEL_AGENT_ID);
-        bookingSvc.create(booking);
-        return travelAgent;
+        return fGb;
     }
-
-//    public TravelAgent delete(Long bookingId) throws RestServiceException {
-//        TravelAgent booking = crud.findById(bookingId);
-//        if(booking != null && booking.getId() != null) {
-//            crud.delete(booking);
-//        } else {
-//            throw new RestServiceException("Invalid Booking Id");
-//        }
-//        return booking;
-//    }
 }

@@ -51,7 +51,7 @@ public class TravelAgentRestService {
             service.create(travelAgentBooking);
             builder = Response.status(Response.Status.CREATED).entity(travelAgentBooking);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
         return builder.build();
     }

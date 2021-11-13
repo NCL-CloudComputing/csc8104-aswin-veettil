@@ -20,6 +20,7 @@ import javax.validation.ValidationException;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Map;
 
 public class BookingService {
     @Inject
@@ -69,7 +70,6 @@ public class BookingService {
         // Write the booking to the database.
         crud.create(booking);
         return booking;
-
     }
 
     /**
@@ -97,5 +97,9 @@ public class BookingService {
             throw new RestServiceException("Invalid Booking Id");
         }
         return booking;
+    }
+
+    public List<Booking> findAllByCriteria(Map<String, Object> criteriaMap) {
+        return crud.findAllByCriteria(criteriaMap);
     }
 }
