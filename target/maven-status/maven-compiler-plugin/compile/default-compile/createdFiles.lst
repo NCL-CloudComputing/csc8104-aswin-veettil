@@ -52,6 +52,7 @@ org/jboss/quickstarts/wfk/booking/TravelAgentRestService.class
 org/jboss/quickstarts/wfk/util/Resources.class
 org/jboss/quickstarts/wfk/booking/service/external/GuestBookingService.class
 org/jboss/quickstarts/wfk/booking/TaxiRestService.class
+org/jboss/quickstarts/wfk/util/UniqueRegNoException.class
 org/jboss/quickstarts/wfk/booking/GuestBookingRestService.class
 org/jboss/quickstarts/wfk/booking/model/Customer.class
 org/jboss/quickstarts/wfk/contact/ContactService.class

@@ -2,6 +2,7 @@ package org.jboss.quickstarts.wfk.booking.validate;
 
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.repository.TaxiRepository;
+import org.jboss.quickstarts.wfk.util.UniqueRegNoException;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -50,7 +51,7 @@ public class TaxiValidator {
         }
         // Check the uniqueness of the email address
         if (taxiRegNoAlreadyExists(taxi.getVehicleRegNo(), taxi.getId())) {
-            throw new ValidationException("Taxi with reg no already exists");
+            throw new UniqueRegNoException("Taxi with reg no already exists");
         }
     }
 

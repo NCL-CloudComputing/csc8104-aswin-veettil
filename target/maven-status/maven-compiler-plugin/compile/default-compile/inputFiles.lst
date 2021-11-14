@@ -16,6 +16,7 @@
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/contact/Contact.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/area/InvalidAreaCodeException.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/util/JacksonConfig.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/util/UniqueRegNoException.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/contact/ContactValidator.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/model/Taxi.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/main/java/org/jboss/quickstarts/wfk/booking/TravelAgentRestService.java

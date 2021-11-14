@@ -3,7 +3,9 @@ package org.jboss.quickstarts.wfk.booking;
 import io.swagger.annotations.*;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.service.TaxiService;
+import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
+import org.jboss.quickstarts.wfk.util.UniqueRegNoException;
 import org.jboss.resteasy.annotations.cache.Cache;
 
 import javax.ejb.Stateless;
@@ -110,7 +112,7 @@ public class TaxiRestService {
             service.create(taxi);
             // Create a "Resource Created" 201 Response and pass the Taxi back in case it is needed.
             builder = Response.status(Response.Status.CREATED).entity(taxi);
-        }catch (ConstraintViolationException ce) {
+        } catch (ConstraintViolationException ce) {
             //Handle bean validation issues
             Map<String, String> responseObj = new HashMap<>();
 
@@ -118,6 +120,11 @@ public class TaxiRestService {
                 responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
             }
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+        } catch (UniqueRegNoException e) {
+            // Handle the unique constraint violation
+            Map<String, String> responseObj = new HashMap<>();
+            responseObj.put("vehicleRegNo", "That registration number is already used, please use a unique registration number");
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.CONFLICT, e);
         } catch (ValidationException ce) {
             //Handle bean validation issues
             Map<String, String> responseObj = new HashMap<String, String>() {{

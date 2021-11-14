@@ -4,8 +4,10 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
+import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
+import org.jboss.quickstarts.wfk.util.UniqueRegNoException;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -19,16 +21,17 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * <p>A suite of tests, run with {@link org.jboss.arquillian Arquillian} to test the JAX-RS endpoint for
  * Contact creation functionality
- * (see {@link CustomerRestService#createCustomer(Customer)} ).<p/>
+ * (see {@link TaxiRestService#createTaxi(Taxi)} (Taxi)} ).<p/>
  *
- * @see CustomerRestService
+ * @see TaxiRestService
  */
 @RunWith(Arquillian.class)
-public class CustomerRestServiceTest {
+public class TaxiRestServiceTest {
     /**
      * <p>Compiles an Archive using Shrinkwrap, containing those external dependencies necessary to run the tests.</p>
      *
@@ -57,24 +60,22 @@ public class CustomerRestServiceTest {
     }
 
     @Inject
-    CustomerRestService customerRestService;
+    TaxiRestService taxiSvc;
 
     @Test
     @InSequence(1)
-    public void testRegisterCustomer() throws Exception {
-        Customer customer = createCustomerInstance("john1@doe.com", "John", "Doe", "(212) 555-1234");
-        Response response = customerRestService.createCustomer(customer);
+    public void testRegisterTaxi() throws Exception {
+        Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8791", 6));
 
-        assertEquals("Unexpected response status", 201, response.getStatus());
+        assertEquals(201, response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     @InSequence(2)
-    public void testInvalidRegister() {
-        Customer customer = createCustomerInstance("", "", "", "");
+    public void testInvalidRegister() throws Exception {
         try {
-            customerRestService.createCustomer(customer);
+            taxiSvc.createTaxi(createTaxiInstance("", 0));
             fail("Expected a RestServiceException to be thrown");
         } catch(RestServiceException e) {
             assertEquals("Unexpected response status", Response.Status.BAD_REQUEST, e.getStatus());
@@ -85,20 +86,20 @@ public class CustomerRestServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     @InSequence(3)
-    public void testDuplicateEmail() throws Exception {
-        // Register an initial user
-        Customer customer = createCustomerInstance("jane2@doe.com","Jane", "Doe", "(212) 555-1234");
-        customerRestService.createCustomer(customer);
+    public void testDuplicateRegNo() throws Exception {
+        // Register an initial taxi
+        Taxi t1 = createTaxiInstance("AXT4512", 4);
+        taxiSvc.createTaxi(t1);
 
-        // Register a different user with the same email
-        Customer anotherCustomer = createCustomerInstance("jane2@doe.com", "John", "Doe", "(213) 355-1234");
+        // Register a different taxi with the same regNo
+        Taxi t2 = createTaxiInstance("AXT4512", 5);
 
         try {
-            customerRestService.createCustomer(anotherCustomer);
+            taxiSvc.createTaxi(t2);
             fail("Expected a RestServiceException to be thrown");
         } catch(RestServiceException e) {
             assertEquals("Unexpected response status", Response.Status.CONFLICT, e.getStatus());
-            assertTrue("Unexpected error. Should be Unique email violation", e.getCause() instanceof UniqueEmailException);
+            assertTrue("Unexpected error. Should be Unique email violation", e.getCause() instanceof UniqueRegNoException);
             assertEquals("Unexpected response body", 1, e.getReasons().size());
         }
 
@@ -107,42 +108,39 @@ public class CustomerRestServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     @InSequence(4)
-    public void testFindCustomer() throws Exception {
-        Customer customer = createCustomerInstance("jane3@doe.com","Jane", "Doe", "(212) 555-1234");
-        customerRestService.createCustomer(customer);
+    public void testFindTaxi() throws Exception {
+        Taxi t1 = createTaxiInstance("AXT1234", 6);
+        taxiSvc.createTaxi(t1);
 
-        Response res = customerRestService.retrieveCustomerById(customer.getId());
-        Customer c = (Customer)res.getEntity();
+        Response res = taxiSvc.retrieveTaxiById(t1.getId());
+        Taxi taxi = (Taxi)res.getEntity();
         assertEquals(200, res.getStatus());
-        assertEquals(c.getId(), customer.getId());
-
+        assertEquals(taxi.getId(), t1.getId());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     @InSequence(5)
-    public void testFindAllCustomer() throws Exception {
-        Response res = customerRestService.retrieveAllCustomers(null, null);
+    public void testFindAllTaxis() throws Exception {
+        Response res = taxiSvc.retrieveAllTaxis();
         assertEquals(200, res.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     @InSequence(5)
-    public void testDeleteCustomer() throws Exception {
-        Customer customer = createCustomerInstance("jane4@doe.com","Jane", "Doe", "(212) 555-1234");
-        customerRestService.createCustomer(customer);
+    public void testDeleteTaxi() throws Exception {
+        Taxi t1 = createTaxiInstance("AXT1235", 2);
+        taxiSvc.createTaxi(t1);
 
-        Response res = customerRestService.deleteCustomer(customer.getId());
+        Response res = taxiSvc.deleteTaxi(t1.getId());
         assertEquals(204, res.getStatus());
     }
 
-    private Customer createCustomerInstance(String email, String fName, String lName, String phoneNo) {
-        Customer customer = new Customer();
-        customer.setEmail(email);
-        customer.setFirstName(fName);
-        customer.setLastName(lName);
-        customer.setPhoneNumber(phoneNo);
-        return customer;
+    private Taxi createTaxiInstance(String regNo, int noOfSeats) {
+        Taxi taxi = new Taxi();
+        taxi.setVehicleRegNo(regNo);
+        taxi.setNoOfSeats(noOfSeats);
+        return taxi;
     }
 }
