@@ -42,6 +42,7 @@ public class Customer implements Serializable {
     @NotNull
     @NotEmpty
     @Email(message = "The email address must be in the format of name@domain.com")
+    @Column(name="email")
     private String email;
 
     @NotNull
