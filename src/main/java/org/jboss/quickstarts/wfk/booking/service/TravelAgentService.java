@@ -154,9 +154,9 @@ public class TravelAgentService {
 
     private void createHotelBooking(Booking booking, GuestBookingService hotelService) {
         HotelGuestBooking hGb = createHotelGuestBookingPayload(booking);
-        HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
+        hGb = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
                 TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
-        booking.setHotelBookingId(hotelResponse.getId());
+        booking.setHotelBookingId(hGb.getId());
     }
 
     private HotelGuestBooking createHotelGuestBookingPayload(Booking booking) {

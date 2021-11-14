@@ -6,6 +6,7 @@ import org.jboss.quickstarts.wfk.booking.model.external.hotel.HotelGuestBooking;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
