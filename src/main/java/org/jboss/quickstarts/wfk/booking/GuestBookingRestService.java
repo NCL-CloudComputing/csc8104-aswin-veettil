@@ -37,8 +37,8 @@ public class GuestBookingRestService {
      * either 201 (Resource created) or with a map of fields, and related errors.</p>
      *
      * @param guestBooking The GuestBooking object, constructed automatically from JSON input, to be <i>created</i> via
-     * {@link org.jboss.quickstarts.wfk.booking.service.BookingService#create(Booking)}
-     * {@link org.jboss.quickstarts.wfk.booking.service.CustomerService#create(Customer)}
+     * {@link BookingService#create(Booking)}
+     * {@link CustomerService#create(Customer)}
      * @return A Response indicating the outcome of the create operation
      */
     @SuppressWarnings("unused")

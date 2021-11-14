@@ -24,6 +24,11 @@ public class TravelAgentRestService {
     private TravelAgentService service;
     @Inject
     private BookingService bookingSvc;
+    /**
+     * <p>Return all the Bookings made by the travel agent. </p>
+     *
+     * @return A Response containing a list of Bookings
+     */
     @GET
     @ApiOperation(value = "Fetch all bookings by travel agent", notes = "Returns a JSON array of all stored Booking objects.")
     public Response retrieveAllBookings() {
@@ -31,6 +36,16 @@ public class TravelAgentRestService {
         List<Booking> bookings = service.findAll();
         return Response.ok(bookings).build();
     }
+    /**
+     * <p>Creates a new booking from the values provided. Performs validation and will return a JAX-RS response with
+     * either 201 (Resource created) or with a map of fields, and related errors.</p>
+     *
+     * <p>Creates a flight and hotel booking by consuming external services</p>
+     *
+     * @param travelAgentBooking The TravelAgentBooking object, constructed automatically from JSON input, to be <i>created</i> via
+     * {@link BookingService#create(Booking)}
+     * @return A Response indicating the outcome of the create operation
+     */
     @SuppressWarnings("unused")
     @POST
     @ApiOperation(value = "Add a new Booking to the database")

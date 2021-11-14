@@ -1,6 +1,7 @@
 package org.jboss.quickstarts.wfk.booking;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.jboss.quickstarts.wfk.booking.model.external.flight.Flight;
 import org.jboss.quickstarts.wfk.booking.service.external.FlightService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -29,7 +30,12 @@ public class FlightRestService {
         // Create client service instance to make REST requests to upstream service
         client = new ResteasyClientBuilder().build();
     }
+    /**
+     * <p>Return all the FLights.</p>
+     * @return A Response containing a list of Flights
+     */
     @GET
+    @ApiOperation(value = "Fetch all Flights", notes = "Returns a JSON array of all stored Flight objects.")
     public Response findAll() {
         //Create client service instance to make REST requests to upstream service
         ResteasyWebTarget target = client.target(Flight.FLIGHT_BASE_URL);

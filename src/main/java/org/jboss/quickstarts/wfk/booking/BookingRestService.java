@@ -33,6 +33,13 @@ public class BookingRestService {
     @Inject
     private BookingService service;
 
+    /**
+     * <p>Return all the Bookings. </p>
+     *
+     * <p>The url may optionally include query parameters specifying a Customer's Id</p>
+     *
+     * @return A Response containing a list of Booking
+     */
     @GET
     @ApiOperation(value = "Fetch all bookings", notes = "Returns a JSON array of all stored Booking objects.")
     public Response retrieveAllBookings(@QueryParam("customerId") Long customerId) {
@@ -81,7 +88,7 @@ public class BookingRestService {
      * either 201 (Resource created) or with a map of fields, and related errors.</p>
      *
      * @param booking The Booking object, constructed automatically from JSON input, to be <i>created</i> via
-     * {@link org.jboss.quickstarts.wfk.booking.service.BookingService#create(Booking)}
+     * {@link BookingService#create(Booking)}
      * @return A Response indicating the outcome of the create operation
      */
     @SuppressWarnings("unused")

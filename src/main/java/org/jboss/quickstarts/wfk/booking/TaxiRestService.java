@@ -33,6 +33,11 @@ public class TaxiRestService {
     @Inject
     private TaxiService service;
 
+    /**
+     * <p>Return all the Taxis. </p>
+     *
+     * @return A Response containing a list of Taxis
+     */
     @GET
     @ApiOperation(value = "Fetch all taxi", notes = "Returns a JSON array of all stored taxi objects.")
     public Response retrieveAllTaxis() {
@@ -73,11 +78,11 @@ public class TaxiRestService {
         return Response.ok(taxi).build();
     }
     /**
-     * <p>Creates a new booking from the values provided. Performs validation and will return a JAX-RS response with
+     * <p>Creates a new taxi from the values provided. Performs validation and will return a JAX-RS response with
      * either 201 (Resource created) or with a map of fields, and related errors.</p>
      *
-     * @param taxi The Booking object, constructed automatically from JSON input, to be <i>created</i> via
-     * {@link org.jboss.quickstarts.wfk.booking.service.TaxiService#create(Taxi)}
+     * @param taxi The Taxi object, constructed automatically from JSON input, to be <i>created</i> via
+     * {@link TaxiService#create(Taxi)}
      * @return A Response indicating the outcome of the create operation
      */
     @SuppressWarnings("unused")
@@ -90,7 +95,7 @@ public class TaxiRestService {
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
     public Response createTaxi(
-            @ApiParam(value = "JSON representation of Booking object to be added to the database", required = true)
+            @ApiParam(value = "JSON representation of Taxi object to be added to the database", required = true)
                     Taxi taxi) throws Exception {
 
 
@@ -103,7 +108,7 @@ public class TaxiRestService {
         try {
             // Go add the new taxi.
             service.create(taxi);
-            // Create a "Resource Created" 201 Response and pass the booking back in case it is needed.
+            // Create a "Resource Created" 201 Response and pass the Taxi back in case it is needed.
             builder = Response.status(Response.Status.CREATED).entity(taxi);
         }catch (ConstraintViolationException ce) {
             //Handle bean validation issues
@@ -133,7 +138,7 @@ public class TaxiRestService {
      *
      * @param taxi The Taxi object, constructed automatically from JSON input, to be <i>updated</i> via
      * {@link TaxiService#update(Taxi)}
-     * @param id The long parameter value provided as the id of the Booking to be updated
+     * @param id The long parameter value provided as the id of the Taxi to be updated
      * @return A Response indicating the outcome of the create operation
      */
     @PUT
@@ -172,7 +177,7 @@ public class TaxiRestService {
         Response.ResponseBuilder builder;
 
         try {
-            // Apply the changes the Contact.
+            // Apply the changes the Taxi.
             service.update(taxi);
 
             // Create an OK Response and pass the taxi back in case it is needed.
