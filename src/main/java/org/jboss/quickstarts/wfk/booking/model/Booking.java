@@ -39,7 +39,6 @@ public class Booking implements Serializable {
     @Column(name = "flight_id")
     private Long flightId;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @JsonIgnore

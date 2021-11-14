@@ -55,22 +55,28 @@ public class BookingValidator {
         }
 
         // Check the uniqueness of the email address
-        if (bookingAlreadyExists(booking.getTaxi().getId(), booking.getBookingDate(), booking.getId())) {
+        if (booking.getTaxi() != null && bookingAlreadyExists(booking.getTaxi().getId(), booking.getBookingDate(), booking.getId())) {
             throw new ValidationException("Booking already exists for the taxi on the given date");
         }
     }
 
     void validateDependencies(Booking booking) throws ValidationException {
-        Taxi taxi = taxiCrud.findById(booking.getTaxi().getId());
-        if (taxi == null) {
-            throw new ValidationException("Taxi with the given id does not exist");
+        if(booking.getTaxi() != null) {
+            Taxi taxi = taxiCrud.findById(booking.getTaxi().getId());
+            if (taxi == null) {
+                throw new ValidationException("Taxi with the given id does not exist");
+            }
+            booking.setTaxi(taxi);
         }
-        Customer customer = custCrud.findById(booking.getCustomer().getId());
-        if (customer == null) {
-            throw new ValidationException("Customer with the given id does not exist");
+        if(booking.getCustomer() != null) {
+            Customer customer = custCrud.findById(booking.getCustomer().getId());
+            if (customer == null) {
+                throw new ValidationException("Customer with the given id does not exist");
+            }
+            booking.setCustomer(customer);
+        } else {
+            throw new ValidationException("Please specify a customer");
         }
-        booking.setTaxi(taxi);
-        booking.setCustomer(customer);
     }
 
     boolean bookingAlreadyExists(Long taxiId, Date bookingDate, Long bookingId) {

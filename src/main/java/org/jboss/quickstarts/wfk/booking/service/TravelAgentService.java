@@ -54,6 +54,10 @@ public class TravelAgentService {
     public TravelAgent create(TravelAgent travelAgent) throws RestServiceException {
         Booking booking = travelAgent.getBooking();
 
+        if(booking.getTaxiId() == null && booking.getHotelId() == null && booking.getFlightId() == null) {
+            throw new RestServiceException("Please specify atlease one of taxi/hotel/flight ids", Response.Status.BAD_REQUEST);
+        }
+
         ResteasyWebTarget hotelTarget = client.target(Hotel.HOTEL_BASE_URL);
         GuestBookingService hotelService = hotelTarget.proxy(GuestBookingService.class);
 
@@ -64,7 +68,7 @@ public class TravelAgentService {
             try {
                 createHotelBooking(booking, hotelService);
             } catch (Exception e) {
-                throw new RestServiceException("Error during creation of hotel booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+                throw new RestServiceException("Error during creation of hotel booking. Transaction cancelled. " + e.getMessage(), Response.Status.BAD_REQUEST);
             }
         }
         if(booking.getFlightId() != null) {
@@ -74,7 +78,7 @@ public class TravelAgentService {
                 if(booking.getHotelId() != null) {
                     hotelService.deleteHotelBooking(booking.getHotelBookingId());
                 }
-                throw new RestServiceException("Error during creation of flight booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+                throw new RestServiceException("Error during creation of flight booking. Transaction cancelled. " + e.getMessage(), Response.Status.BAD_REQUEST);
             }
         }
 

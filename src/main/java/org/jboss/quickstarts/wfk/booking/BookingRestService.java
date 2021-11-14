@@ -112,6 +112,7 @@ public class BookingRestService {
         Response.ResponseBuilder builder;
 
         try {
+            validateBookingEntities(booking);
             // Go add the new Booking.
             service.create(booking);
 
@@ -141,6 +142,7 @@ public class BookingRestService {
         log.info("createBooking completed. Booking = " + booking.toString());
         return builder.build();
     }
+
     /**
      * <p>Updates the booking with the ID provided in the database. Performs validation, and will return a JAX-RS response
      * with either 200 (ok), or with a map of fields, and related errors.</p>
@@ -184,8 +186,8 @@ public class BookingRestService {
         }
 
         Response.ResponseBuilder builder;
-
         try {
+            validateBookingEntities(booking);
             // Apply the changes the Contact.
             service.update(booking);
 
@@ -247,5 +249,14 @@ public class BookingRestService {
             throw new RestServiceException(e.getMessage(), Response.Status.NOT_FOUND);
         }
         return builder.build();
+    }
+
+    private void validateBookingEntities(Booking booking) {
+        if(booking.getTaxiId() == null) {
+            throw new RestServiceException("Please provide taxi Id", Response.Status.BAD_REQUEST);
+        }
+        if(booking.getFlightId() != null || booking.getHotelId() != null) {
+            throw new RestServiceException("Flight/Hotel booking supported.", Response.Status.BAD_REQUEST);
+        }
     }
 }
