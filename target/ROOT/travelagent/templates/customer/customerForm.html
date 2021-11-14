@@ -60,7 +60,7 @@
             <label for="phoneNumber">Phone:</label>
             <!-- ng-pattern validates the contents of an input against a provided regexp. -->
             <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" placeholder="(201) 000-1111"
-                   ng-model="customer.phoneNumber" required>
+                   ng-model="customer.phoneNumber" ng-pattern="/^\([2-9][0-8][0-9]\)\s?[0-9]{3}\-[0-9]{4}$/" required>
             <!-- Appropriate error messages, to be displayed as required. -->
             <!-- ng-show conditionally applies the style {display: none !important} if statement is false. -->
             <p class="help-block" id="phoneNumber-required" ng-show="customerForm.phoneNumber.$dirty && customerForm.phoneNumber.$error.required">

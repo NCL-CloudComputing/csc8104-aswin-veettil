@@ -61,10 +61,21 @@ public class TravelAgentService {
         GuestBookingService flightService = flightTarget.proxy(GuestBookingService.class);
 
         if(booking.getHotelId() != null) {
-            createHotelBooking(booking, hotelService);
+            try {
+                createHotelBooking(booking, hotelService);
+            } catch (Exception e) {
+                throw new RestServiceException("Error during creation of hotel booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+            }
         }
         if(booking.getFlightId() != null) {
-            createFlightBooking(booking, hotelService, flightService);
+            try {
+                createFlightBooking(booking, hotelService, flightService);
+            } catch (Exception e) {
+                if(booking.getHotelId() != null) {
+                    hotelService.deleteHotelBooking(booking.getHotelBookingId());
+                }
+                throw new RestServiceException("Error during creation of flight booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
+            }
         }
 
         booking.setTravelAgentId(TravelAgent.TRAVEL_AGENT_ID);
@@ -82,28 +93,66 @@ public class TravelAgentService {
         return travelAgent;
     }
 
+    /**
+     * <p>Deletes the provided Booking object from the application database if found there.<p/>
+     *
+     * @param booking The Booking object to be removed from the application database
+     * @return The Booking object that has been successfully removed from the application database; or null
+     * @throws Exception when error occurs
+     */
+     public Booking delete(Booking booking) throws Exception {
+         ResteasyWebTarget hotelTarget = client.target(Hotel.HOTEL_BASE_URL);
+         GuestBookingService hotelService = hotelTarget.proxy(GuestBookingService.class);
+
+         ResteasyWebTarget flightTarget = client.target(Flight.FLIGHT_BASE_URL);
+         GuestBookingService flightService = flightTarget.proxy(GuestBookingService.class);
+
+         if(booking.getHotelBookingId() != null) {
+             try {
+                 hotelService.deleteHotelBooking(booking.getHotelBookingId());
+             } catch(Exception e) {
+                 throw new RestServiceException("Could not delete booking.", Response.Status.INTERNAL_SERVER_ERROR);
+             }
+         }
+
+         if(booking.getFlightBookingId() != null) {
+            try {
+                flightService.deleteFlightBooking(booking.getFlightBookingId());
+            } catch(Exception e) {
+                //Revert hotel booking deletion if hotel booking exists
+                if(booking.getHotelBookingId() != null) {
+                    createHotelBooking(booking, hotelService);
+                }
+                throw new RestServiceException("Could not delete booking.", Response.Status.INTERNAL_SERVER_ERROR);
+            }
+         }
+
+         try {
+             bookingSvc.delete(booking.getId());
+         } catch(Exception e) {
+             if(booking.getHotelBookingId() != null) {
+                 createHotelBooking(booking, hotelService);
+             }
+             if(booking.getFlightBookingId() != null) {
+                 createFlightBooking(booking, hotelService, flightService);
+             }
+             bookingSvc.update(booking);
+             throw new RestServiceException("Could not delete booking.", Response.Status.INTERNAL_SERVER_ERROR);
+         }
+         return booking;
+    }
+
     private void createFlightBooking(Booking booking, GuestBookingService hotelService, GuestBookingService flightService) {
-        try {
             FlightGuestBooking fGb = createFlightGuestBookingPayload(booking);
             FlightBooking flightResponse = flightService.createBooking(fGb);
             booking.setFlightBookingId(flightResponse.getId());
-        } catch (Exception e) {
-            if(booking.getHotelId() != null) {
-                hotelService.deleteHotelBooking(booking.getHotelBookingId());
-            }
-            throw new RestServiceException("Error during creation of flight booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
-        }
     }
 
     private void createHotelBooking(Booking booking, GuestBookingService hotelService) {
-        try {
-            HotelGuestBooking hGb = createHotelGuestBookingPayload(booking);
-            HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
-                    TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
-            booking.setHotelBookingId(hotelResponse.getId());
-        } catch (Exception e) {
-            throw new RestServiceException("Error during creation of hotel booking. Transaction cancelled.", Response.Status.BAD_REQUEST);
-        }
+        HotelGuestBooking hGb = createHotelGuestBookingPayload(booking);
+        HotelGuestBooking hotelResponse = hotelService.createBooking(TravelAgent.EXT_TRAVEL_AGENT_EMAIL, TravelAgent.EXT_TRAVEL_AGENT_PHNO,
+                TravelAgent.EXT_TRAVEL_AGENT_FIRSTNAME, TravelAgent.EXT_TRAVEL_AGENT_LASTNAME, hGb);
+        booking.setHotelBookingId(hotelResponse.getId());
     }
 
     private HotelGuestBooking createHotelGuestBookingPayload(Booking booking) {

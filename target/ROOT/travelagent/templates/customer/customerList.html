@@ -26,7 +26,7 @@
             <ul class="contacts">
                 <!-- The list is built using Angular's ng-repeat functionality, iterating over customer objects in customers -->
                 <li class="contact" ng-repeat="customer in subset | orderBy: 'name'">
-                    <a href="#/customers/{{customer.id}}">{{customer.name}}</a>
+                    <a href="#/customers/{{customer.id}}">{{customer.firstName}}</a>
                     <div class="contact-details" ng-show="details">
                         <p>
                             <strong>{{customer.email}}</strong>

@@ -3,6 +3,7 @@ package org.jboss.quickstarts.wfk.booking;
 import io.swagger.annotations.*;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.TravelAgent;
+import org.jboss.quickstarts.wfk.booking.service.BookingService;
 import org.jboss.quickstarts.wfk.booking.service.TravelAgentService;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
@@ -21,7 +22,8 @@ import java.util.List;
 public class TravelAgentRestService {
     @Inject
     private TravelAgentService service;
-
+    @Inject
+    private BookingService bookingSvc;
     @GET
     @ApiOperation(value = "Fetch all bookings by travel agent", notes = "Returns a JSON array of all stored Booking objects.")
     public Response retrieveAllBookings() {
@@ -52,6 +54,47 @@ public class TravelAgentRestService {
             builder = Response.status(Response.Status.CREATED).entity(travelAgentBooking);
         } catch (Exception e) {
             throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
+        return builder.build();
+    }
+    /**
+     * <p>Deletes a booking using the ID provided. If the ID is not present then nothing can be deleted.</p>
+     * <p>Also deletes corresponding booking from consuming services</p>
+     *
+     * <p>Will return a JAX-RS response with either 204 NO CONTENT or with a map of fields, and related errors.</p>
+     *
+     * @param id The Long parameter value provided as the id of the Booking to be deleted
+     * @return A Response indicating the outcome of the delete operation
+     */
+    @DELETE
+    @Path("/{id:[0-9]+}")
+    @ApiOperation(value = "Delete a Booking from the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "The booking has been successfully deleted"),
+            @ApiResponse(code = 400, message = "Invalid booking id supplied"),
+            @ApiResponse(code = 404, message = "booking with id not found"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
+    public Response deleteBooking(
+            @ApiParam(value = "Id of booking to be deleted", allowableValues = "range[0, infinity]", required = true)
+            @PathParam("id")
+                    long id) {
+
+        Response.ResponseBuilder builder;
+
+        Booking booking = bookingSvc.findById(id);
+        if (booking == null) {
+            throw new RestServiceException("No Booking with the id " + id + " was found!", Response.Status.NOT_FOUND);
+        }
+
+        try {
+            service.delete(booking);
+
+            builder = Response.noContent();
+
+        } catch (Exception e) {
+            // Handle generic exceptions
+            throw new RestServiceException(e);
         }
         return builder.build();
     }
