@@ -1,3 +1,4 @@
+org/jboss/quickstarts/wfk/booking/GuestBookingRestServiceTest.class
 org/jboss/quickstarts/wfk/booking/BookingRestServiceTest.class
 org/jboss/quickstarts/wfk/booking/TaxiRestServiceTest.class
 org/jboss/quickstarts/wfk/booking/CustomerRestServiceTest.class

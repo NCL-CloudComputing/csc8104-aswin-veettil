@@ -65,10 +65,10 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testRegisterCustomer" time="0.047"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testRegisterCustomer" time="0.049"/>
   <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testInvalidRegister" time="0.008"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testDuplicateEmail" time="0.008"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testFindCustomer" time="0.009"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testDeleteCustomer" time="0.008"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testFindAllCustomer" time="0.005"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testDuplicateEmail" time="0.007"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testFindCustomer" time="0.008"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testDeleteCustomer" time="0.007"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.CustomerRestServiceTest" name="testFindAllCustomer" time="0.006"/>
 </testsuite>

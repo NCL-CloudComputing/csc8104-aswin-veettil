@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
  * Contact creation functionality
  * (see {@link BookingRestService#createBooking(Booking)}).<p/>
  *
- * @see TaxiRestService
+ * @see BookingRestService
  */
 @RunWith(Arquillian.class)
 public class BookingRestServiceTest {

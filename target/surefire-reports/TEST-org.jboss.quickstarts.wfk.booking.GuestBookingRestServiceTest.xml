@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="3" failures="0" name="org.jboss.quickstarts.wfk.contact.ContactRegistrationTest" time="0.454" errors="0" skipped="0">
+<testsuite tests="3" failures="0" name="org.jboss.quickstarts.wfk.booking.GuestBookingRestServiceTest" time="0.078" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.13+8-LTS"/>
@@ -65,7 +65,7 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="org.jboss.quickstarts.wfk.contact.ContactRegistrationTest" name="testRegister" time="0.316"/>
-  <testcase classname="org.jboss.quickstarts.wfk.contact.ContactRegistrationTest" name="testInvalidRegister" time="0.013"/>
-  <testcase classname="org.jboss.quickstarts.wfk.contact.ContactRegistrationTest" name="testDuplicateEmail" time="0.125"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.GuestBookingRestServiceTest" name="testRegisterBookingNewCustomer" time="0.058"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.GuestBookingRestServiceTest" name="testRegisterBookingExistingCustomer" time="0.01"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.GuestBookingRestServiceTest" name="testInvalidGuestBooking" time="0.01"/>
 </testsuite>

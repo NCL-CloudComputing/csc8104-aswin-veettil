@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="6" failures="0" name="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" time="0.111" errors="0" skipped="0">
+<testsuite tests="6" failures="0" name="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" time="0.103" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.13+8-LTS"/>
@@ -65,10 +65,10 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testRegisterBooking" time="0.057"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testInvalidRegister" time="0.011"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testDuplicateBooking" time="0.015"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testFindBooking" time="0.011"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testFindAllTaxis" time="0.006"/>
-  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testDeleteBooking" time="0.011"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testRegisterBooking" time="0.056"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testInvalidRegister" time="0.01"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testDuplicateBooking" time="0.01"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testFindBooking" time="0.012"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testFindAllTaxis" time="0.005"/>
+  <testcase classname="org.jboss.quickstarts.wfk.booking.BookingRestServiceTest" name="testDeleteBooking" time="0.01"/>
 </testsuite>
