@@ -33,7 +33,7 @@
         // EDIT ==>
 
         var Customer = $resource(
-            'http://localhost:8080/api/customers/:customerId',
+            'http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com/api/customers/:customerId',
             {customerId: '@id'},
             {
                 'update': {method: 'PUT'}

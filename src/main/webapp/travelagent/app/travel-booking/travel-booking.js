@@ -33,7 +33,7 @@
         // EDIT ==>
 
         var TravelBooking = $resource(
-            'http://localhost:8080/api/travelAgent/bookings/:bookingId',
+            'http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com/api/travelAgent/bookings/:bookingId',
             {bookingId: '@id'}
         );
 

@@ -41,21 +41,21 @@
         // Commodity entities from your TravelAgent API
 
         // EDIT ==>
-        $http.get('http://localhost:8080/api/taxis')
+        $http.get('http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com/api/taxis')
             .success(function(data) {
                 $scope.taxis = data;
             })
             .error(function() {
                 $scope.messageService.push('danger', '/taxis resource unavailable');
             });
-        $http.get('http://localhost:8080/api/hotels')
+        $http.get('http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com/api/hotels')
             .success(function(data) {
                 $scope.hotels = data;
             })
             .error(function() {
                     $scope.messageService.push('danger', '/hotels resource unavailable');
             });
-        $http.get('http://localhost:8080/api/flights')
+        $http.get('http://csc8104-build-stream-aswinkvncl-dev.apps.sandbox.x8i5.p1.openshiftapps.com/api/flights')
             .success(function(data) {
                 $scope.flights = data;
             })
