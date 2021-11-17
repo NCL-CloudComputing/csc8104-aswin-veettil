@@ -55,7 +55,7 @@ public class TravelAgentService {
         Booking booking = travelAgent.getBooking();
 
         if(booking.getTaxiId() == null && booking.getHotelId() == null && booking.getFlightId() == null) {
-            throw new RestServiceException("Please specify atlease one of taxi/hotel/flight ids", Response.Status.BAD_REQUEST);
+            throw new RestServiceException("Please specify atleast one of taxi/hotel/flight ids", Response.Status.BAD_REQUEST);
         }
 
         ResteasyWebTarget hotelTarget = client.target(Hotel.HOTEL_BASE_URL);
@@ -115,7 +115,7 @@ public class TravelAgentService {
              try {
                  hotelService.deleteHotelBooking(booking.getHotelBookingId());
              } catch(Exception e) {
-                 throw new RestServiceException("Could not delete booking.", Response.Status.INTERNAL_SERVER_ERROR);
+                 throw new RestServiceException("Could not delete hotel booking.", Response.Status.INTERNAL_SERVER_ERROR);
              }
          }
 
@@ -127,7 +127,7 @@ public class TravelAgentService {
                 if(booking.getHotelBookingId() != null) {
                     createHotelBooking(booking, hotelService);
                 }
-                throw new RestServiceException("Could not delete booking.", Response.Status.INTERNAL_SERVER_ERROR);
+                throw new RestServiceException("Could not delete flight booking.", Response.Status.INTERNAL_SERVER_ERROR);
             }
          }
 

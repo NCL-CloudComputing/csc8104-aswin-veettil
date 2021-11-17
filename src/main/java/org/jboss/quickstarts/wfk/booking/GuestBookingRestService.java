@@ -68,8 +68,9 @@ public class GuestBookingRestService {
             //add the new Customer.
             cust = customerService.create(customer);
         }
+        guestBooking.setCustomer(cust);
         //associate customer to booking
-        booking.setCustomer(cust);
+        booking.setCustomerId(cust.getId());
         try {
             // add the new Booking.
             bookingService.create(booking);
@@ -89,7 +90,7 @@ public class GuestBookingRestService {
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
         } catch (Exception e) {
             // Handle generic exceptions
-            throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
+            throw new RestServiceException(e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
         // Create a "Resource Created" 201 Response and pass the booking back in case it is needed.
         builder = Response.status(Response.Status.CREATED).entity(guestBooking);

@@ -152,8 +152,6 @@ public class CustomerRestService {
     public Response createCustomer(
             @ApiParam(value = "JSON representation of customer object to be added to the database", required = true)
                     Customer customer) {
-
-
         if (customer == null) {
             throw new RestServiceException("Bad Request", Response.Status.BAD_REQUEST);
         }
@@ -184,7 +182,7 @@ public class CustomerRestService {
             throw new RestServiceException("Bad Request", responseObj, Response.Status.CONFLICT, e);
         } catch (Exception e) {
             // Handle generic exceptions
-            throw new RestServiceException(e);
+            throw new RestServiceException("Unexpected Error", Response.Status.INTERNAL_SERVER_ERROR);
         }
 
         return builder.build();

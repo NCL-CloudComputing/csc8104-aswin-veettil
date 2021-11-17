@@ -3,7 +3,6 @@ package org.jboss.quickstarts.wfk.booking;
 import io.swagger.annotations.*;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
 import org.jboss.quickstarts.wfk.booking.service.TaxiService;
-import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.quickstarts.wfk.util.UniqueRegNoException;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -52,7 +51,7 @@ public class TaxiRestService {
      * <p>Search for and return a Taxi identified by id.</p>
      *
      * @param id The long parameter value provided as a Taxi's id
-     * @return A Response containing a single customer
+     * @return A Response containing a single taxi
      */
     @GET
     @Cache

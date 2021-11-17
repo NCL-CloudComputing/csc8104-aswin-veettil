@@ -1,13 +1,21 @@
 package org.jboss.quickstarts.wfk.booking.service;
 
+import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
+import org.jboss.quickstarts.wfk.booking.model.external.flight.Flight;
+import org.jboss.quickstarts.wfk.booking.model.external.hotel.Hotel;
 import org.jboss.quickstarts.wfk.booking.repository.CustomerRepository;
+import org.jboss.quickstarts.wfk.booking.service.external.GuestBookingService;
 import org.jboss.quickstarts.wfk.booking.validate.CustomerValidator;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,7 +27,11 @@ public class CustomerService {
     @Inject
     private @Named("logger") Logger log;
 
+    private ResteasyClient client;
+
     public CustomerService() {
+        // Create client service instance to make REST requests to upstream service
+        client = new ResteasyClientBuilder().build();
     }
 
     /**
@@ -104,8 +116,31 @@ public class CustomerService {
         // Either update the customer or add it if it can't be found.
         return crud.update(customer);
     }
-    public Customer delete(Long bookingId) throws RestServiceException {
-        Customer customer = crud.findById(bookingId);
+    public Customer delete(Long customerId) throws RestServiceException {
+        Customer customer = crud.findById(customerId);
+        ResteasyWebTarget hotelTarget = client.target(Hotel.HOTEL_BASE_URL);
+        GuestBookingService hotelService = hotelTarget.proxy(GuestBookingService.class);
+
+        ResteasyWebTarget flightTarget = client.target(Flight.FLIGHT_BASE_URL);
+        GuestBookingService flightService = flightTarget.proxy(GuestBookingService.class);
+
+        for(Booking booking : customer.getBooking()) {
+            if(booking.getHotelBookingId() != null) {
+                try {
+                    hotelService.deleteHotelBooking(booking.getHotelBookingId());
+                } catch(Exception e) {
+                    throw new RestServiceException("Could not delete hotel booking.", Response.Status.INTERNAL_SERVER_ERROR);
+                }
+            }
+
+            if(booking.getFlightBookingId() != null) {
+                try {
+                    flightService.deleteFlightBooking(booking.getFlightBookingId());
+                } catch(Exception e) {
+                    throw new RestServiceException("Could not delete flight booking.", Response.Status.INTERNAL_SERVER_ERROR);
+                }
+            }
+        }
         if(customer != null && customer.getId() != null) {
             crud.delete(customer);
         } else {

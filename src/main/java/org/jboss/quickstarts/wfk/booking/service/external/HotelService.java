@@ -16,5 +16,5 @@ public interface HotelService {
 
     @GET
     @Path("/{id:[0-9]+}")
-    Hotel getHotelById(@PathParam("id") int id);
+    Hotel getHotelById(@PathParam("id") long id);
 }
