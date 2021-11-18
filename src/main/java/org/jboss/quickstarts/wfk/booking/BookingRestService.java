@@ -76,10 +76,8 @@ public class BookingRestService {
 
         Booking booking = service.findById(id);
         if (booking == null) {
-            // Verify that the contact exists. Return 404, if not present.
             throw new RestServiceException("No booking with the id " + id + " was found!", Response.Status.NOT_FOUND);
         }
-        log.info("findById " + id + ": found Contact = " + booking.toString());
 
         return Response.ok(booking).build();
     }
@@ -95,9 +93,9 @@ public class BookingRestService {
     @POST
     @ApiOperation(value = "Add a new Booking to the database")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Contact created successfully."),
-            @ApiResponse(code = 400, message = "Invalid Contact supplied in request body"),
-            @ApiResponse(code = 409, message = "Contact supplied in request body conflicts with an existing Contact"),
+            @ApiResponse(code = 201, message = "Booking created successfully."),
+            @ApiResponse(code = 400, message = "Invalid Booking supplied in request body"),
+            @ApiResponse(code = 409, message = "Booking supplied in request body conflicts with an existing Booking"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
     public Response createBooking(
@@ -188,7 +186,7 @@ public class BookingRestService {
         Response.ResponseBuilder builder;
         try {
             validateBookingEntities(booking);
-            // Apply the changes the Contact.
+            // Apply the changes the Booking.
             service.update(booking);
 
             // Create an OK Response and pass the booking back in case it is needed.
