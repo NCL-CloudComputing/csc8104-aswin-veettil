@@ -12,8 +12,6 @@ public abstract class Booking_ {
 	public static volatile SingularAttribute<Booking, Boolean> isTravelAgentBooking;
 	public static volatile SingularAttribute<Booking, Long> flightBookingId;
 	public static volatile SingularAttribute<Booking, Taxi> taxi;
-	public static volatile SingularAttribute<Booking, Long> taxiId;
-	public static volatile SingularAttribute<Booking, Long> customerId;
 	public static volatile SingularAttribute<Booking, Long> flightId;
 	public static volatile SingularAttribute<Booking, Date> bookingDate;
 	public static volatile SingularAttribute<Booking, Long> id;

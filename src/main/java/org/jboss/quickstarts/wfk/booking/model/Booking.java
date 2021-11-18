@@ -51,13 +51,17 @@ public class Booking implements Serializable {
     private boolean isTravelAgentBooking;
 
     @JsonIgnore
+    @Column(name="hotel_booking_id")
     private Long hotelBookingId;
 
     @JsonIgnore
+    @Column(name="flight_booking_id")
     private Long flightBookingId;
 
+    @Transient
     private Long taxiId;
 
+    @Transient
     private Long customerId;
 
     public Long getId() {
