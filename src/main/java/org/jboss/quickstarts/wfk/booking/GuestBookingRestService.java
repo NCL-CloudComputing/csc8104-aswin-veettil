@@ -8,8 +8,14 @@ import org.jboss.quickstarts.wfk.booking.service.BookingService;
 import org.jboss.quickstarts.wfk.booking.service.CustomerService;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
+import javax.naming.InitialContext;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -27,11 +33,14 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/guestBookings")
 @Stateless
+@TransactionManagement(value= TransactionManagementType.BEAN)
 public class GuestBookingRestService {
     @Inject
     BookingService bookingService;
     @Inject
     CustomerService customerService;
+    @Resource
+    UserTransaction transaction;
     /**
      * <p>Creates a new booking and customer from the values provided. Performs validation and will return a JAX-RS response with
      * either 201 (Resource created) or with a map of fields, and related errors.</p>
@@ -52,9 +61,7 @@ public class GuestBookingRestService {
     })
     public Response createGuestBooking(
             @ApiParam(value = "JSON representation of GuestBooking object to be added to the database", required = true)
-                    GuestBooking guestBooking) throws RestServiceException {
-
-
+                    GuestBooking guestBooking) throws RestServiceException, SystemException {
         if (guestBooking == null) {
             throw new RestServiceException("Bad Request", Response.Status.BAD_REQUEST);
         }
@@ -63,18 +70,22 @@ public class GuestBookingRestService {
 
         Booking booking = guestBooking.getBooking();
         Customer customer = guestBooking.getCustomer();
-        Customer cust = customerService.findByEmail(customer.getEmail());
-        if (cust == null) {
-            //add the new Customer.
-            cust = customerService.create(customer);
-        }
-        guestBooking.setCustomer(cust);
-        //associate customer to booking
-        booking.setCustomerId(cust.getId());
         try {
+            transaction.begin();
+            Customer cust = customerService.findByEmail(customer.getEmail());
+            if (cust == null) {
+                //add the new Customer.
+                cust = customerService.create(customer);
+            }
+            guestBooking.setCustomer(cust);
+            //associate customer to booking
+            booking.setCustomerId(cust.getId());
+
             // add the new Booking.
             bookingService.create(booking);
+            transaction.commit();
         }  catch (ConstraintViolationException ce) {
+            transaction.rollback();
             //Handle bean validation issues
             Map<String, String> responseObj = new HashMap<>();
 
@@ -83,12 +94,14 @@ public class GuestBookingRestService {
             }
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
         } catch (ValidationException ce) {
+            transaction.rollback();
             //Handle bean validation issues
             Map<String, String> responseObj = new HashMap<String, String>() {{
                 put("BAD_REQ", ce.getMessage());
             }};
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
         } catch (Exception e) {
+            transaction.rollback();
             // Handle generic exceptions
             throw new RestServiceException(e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }

@@ -97,6 +97,9 @@ public class CustomerRestService {
             // Verify that the customer exists. Return 404, if not present.
             throw new RestServiceException("No Customer with the email " + email + " was found!", Response.Status.NOT_FOUND);
         }
+        if(customer == null) {
+            throw new RestServiceException("No Customer with the email " + email + " was found!", Response.Status.NOT_FOUND);
+        }
         return Response.ok(customer).build();
     }
 
