@@ -1,12 +1,15 @@
-package org.jboss.quickstarts.wfk.booking;
+package org.jboss.quickstarts.wfk.validator;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
+import org.jboss.quickstarts.wfk.booking.BookingRestService;
+import org.jboss.quickstarts.wfk.booking.CustomerRestService;
+import org.jboss.quickstarts.wfk.booking.TaxiRestService;
 import org.jboss.quickstarts.wfk.booking.model.Booking;
 import org.jboss.quickstarts.wfk.booking.model.Customer;
-import org.jboss.quickstarts.wfk.booking.model.GuestBooking;
 import org.jboss.quickstarts.wfk.booking.model.Taxi;
+import org.jboss.quickstarts.wfk.booking.validate.BookingValidator;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -17,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.validation.ValidationException;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.time.LocalDateTime;
@@ -24,15 +28,14 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * <p>A suite of tests, run with {@link org.jboss.arquillian Arquillian} to test the JAX-RS endpoint for
- * (see {@link GuestBookingRestService#createGuestBooking(GuestBooking)}).<p/>
- *
- * @see GuestBookingRestService
+ * (see {@link BookingValidator).<p/>
  */
 @RunWith(Arquillian.class)
-public class GuestBookingRestServiceTest {
+public class BookingValidatorTest {
     /**
      * <p>Compiles an Archive using Shrinkwrap, containing those external dependencies necessary to run the tests.</p>
      *
@@ -61,62 +64,44 @@ public class GuestBookingRestServiceTest {
     }
 
     @Inject
-    GuestBookingRestService guestBookingRestService;
+    BookingValidator validator;
     @Inject
     TaxiRestService taxiSvc;
     @Inject
-    CustomerRestService customerSvc;
+    CustomerRestService customerRestService;
 
     Date currentDate = new Date();
     LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().plusMonths(1);
     Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
-
     @Test
     @InSequence(1)
-    public void testRegisterBookingNewCustomer() throws Exception {
-        Response response = taxiSvc.createTaxi(createTaxiInstance("BXT8790", 6));
+    public void testBookingValidation() throws Exception {
+        Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8790", 6));
         Taxi taxi = (Taxi) response.getEntity();
-        Customer customer = createCustomerInstance("john201@doe.com", "John", "Doe", "09876543210");
-        Booking booking = createBookingInstance(taxi);
-        GuestBooking gb = createGuestBookingInstance(booking, customer);
-        response = guestBookingRestService.createGuestBooking(gb);
-        assertEquals(201, response.getStatus());
+        response = customerRestService.createCustomer(createCustomerInstance("john101@doe.com", "John", "Doe", "09876543210"));
+        Customer customer = (Customer)response.getEntity();
+        Booking booking = createBookingInstance(taxi, customer);
+        validator.validateBooking(booking);
     }
 
     @Test
     @InSequence(2)
-    public void testRegisterBookingExistingCustomer() throws Exception {
-        Response response = taxiSvc.createTaxi(createTaxiInstance("BXT8791", 6));
-        Taxi taxi = (Taxi) response.getEntity();
-        Customer customer = createCustomerInstance("john202@doe.com", "John", "Doe", "09876543210");
-        customerSvc.createCustomer(customer);
-        Booking booking = createBookingInstance(taxi);
-        booking.setCustomerId(customer.getId());
-        booking.setCustomer(customer);
-        GuestBooking gb = createGuestBookingInstance(booking, customer);
-        response = guestBookingRestService.createGuestBooking(gb);
-        assertEquals(201, response.getStatus());
-    }
-
-    @Test
-    @InSequence(3)
-    public void testInvalidGuestBooking() throws Exception {
-        Response response = taxiSvc.createTaxi(createTaxiInstance("BXT8792", 6));
-        Taxi taxi = (Taxi) response.getEntity();
-        Customer customer = createCustomerInstance("john203@doe.com", "John", "Doe", "09876543210");
-        customerSvc.createCustomer(customer);
-        Booking booking = createBookingInstance(taxi);
-        booking.setCustomerId(customer.getId());
-        booking.setCustomer(customer);
-        booking.setBookingDate(new Date());
-        GuestBooking gb = createGuestBookingInstance(booking, customer);
+    public void testInvalidRegisterValidation() throws Exception {
         try {
-            guestBookingRestService.createGuestBooking(gb);
+            Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8781", 6));
+            Taxi taxi = (Taxi) response.getEntity();
+            response = customerRestService.createCustomer(createCustomerInstance("john9999@doe.com", "John", "Doe", "09876543210"));
+            //set invalid customer
+            Customer customer = new Customer();
+            customer.setId((long)1234);
+            Booking booking = createBookingInstance(taxi, customer);
+            validator.validateBooking(booking);
+            fail("Expected a ValidationException to be thrown");
+        } catch(ValidationException e) {
+            assertEquals("Unexpected response status", "Customer with the given id does not exist", e.getMessage());
         }
-        catch (RestServiceException e){
-            assertEquals("Unexpected response status", Response.Status.BAD_REQUEST, e.getStatus());
-        }
+
     }
 
     private Taxi createTaxiInstance(String regNo, int noOfSeats) {
@@ -133,17 +118,13 @@ public class GuestBookingRestServiceTest {
         customer.setPhoneNumber(phoneNo);
         return customer;
     }
-    private Booking createBookingInstance(Taxi taxi) {
+    private Booking createBookingInstance(Taxi taxi, Customer customer) {
         Booking booking = new Booking();
+        booking.setCustomerId(customer.getId());
+        booking.setCustomer(customer);
         booking.setTaxiId(taxi.getId());
         booking.setTaxi(taxi);
         booking.setBookingDate(date);
         return booking;
-    }
-    private GuestBooking createGuestBookingInstance(Booking booking, Customer customer) {
-        GuestBooking guestBooking = new GuestBooking();
-        guestBooking.setCustomer(customer);
-        guestBooking.setBooking(booking);
-        return guestBooking;
     }
 }

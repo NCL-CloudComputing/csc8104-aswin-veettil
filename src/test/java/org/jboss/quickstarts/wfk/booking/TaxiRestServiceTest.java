@@ -25,7 +25,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * <p>A suite of tests, run with {@link org.jboss.arquillian Arquillian} to test the JAX-RS endpoint for
- * Contact creation functionality
  * (see {@link TaxiRestService#createTaxi(Taxi)} ).<p/>
  *
  * @see TaxiRestService

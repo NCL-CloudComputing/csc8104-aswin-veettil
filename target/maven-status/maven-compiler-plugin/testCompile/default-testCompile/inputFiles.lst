@@ -1,5 +1,8 @@
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/contact/ContactRegistrationTest.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/validator/TaxiValidatorTest.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/booking/BookingRestServiceTest.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/validator/CustomerValidatorTest.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/booking/TaxiRestServiceTest.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/booking/CustomerRestServiceTest.java
+/Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/validator/BookingValidatorTest.java
 /Users/aswin/Documents/8104Coursework/csc8104-aswin-veettil/src/test/java/org/jboss/quickstarts/wfk/booking/GuestBookingRestServiceTest.java

@@ -29,7 +29,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * <p>A suite of tests, run with {@link org.jboss.arquillian Arquillian} to test the JAX-RS endpoint for
- * Contact creation functionality
  * (see {@link BookingRestService#createBooking(Booking)}).<p/>
  *
  * @see BookingRestService
@@ -80,7 +79,7 @@ public class BookingRestServiceTest {
     public void testRegisterBooking() throws Exception {
         Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8790", 6));
         Taxi taxi = (Taxi) response.getEntity();
-        response = customerRestService.createCustomer(createCustomerInstance("john101@doe.com", "John", "Doe", "(212) 555-1234"));
+        response = customerRestService.createCustomer(createCustomerInstance("john101@doe.com", "John", "Doe", "09876543210"));
         Customer customer = (Customer)response.getEntity();
         Booking booking = createBookingInstance(taxi, customer);
         response = bookingSvc.createBooking(booking);
@@ -94,7 +93,7 @@ public class BookingRestServiceTest {
         try {
             Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8781", 6));
             Taxi taxi = (Taxi) response.getEntity();
-            response = customerRestService.createCustomer(createCustomerInstance("john102@doe.com", "John", "Doe", "(212) 555-1234"));
+            response = customerRestService.createCustomer(createCustomerInstance("john102@doe.com", "John", "Doe", "09876543210"));
             //set invalid customer
             Customer customer = new Customer();
             customer.setId((long)1234);
@@ -113,7 +112,7 @@ public class BookingRestServiceTest {
     public void testDuplicateBooking() throws Exception {
         Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8782", 6));
         Taxi taxi = (Taxi) response.getEntity();
-        response = customerRestService.createCustomer(createCustomerInstance("john105@doe.com", "John", "Doe", "(212) 555-1234"));
+        response = customerRestService.createCustomer(createCustomerInstance("john105@doe.com", "John", "Doe", "09876543210"));
         Customer customer = (Customer)response.getEntity();
         Booking booking = createBookingInstance(taxi, customer);
         bookingSvc.createBooking(booking);
@@ -132,7 +131,7 @@ public class BookingRestServiceTest {
     public void testFindBooking() throws Exception {
         Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8783", 6));
         Taxi taxi = (Taxi) response.getEntity();
-        response = customerRestService.createCustomer(createCustomerInstance("john103@doe.com", "John", "Doe", "(212) 555-1234"));
+        response = customerRestService.createCustomer(createCustomerInstance("john103@doe.com", "John", "Doe", "09876543210"));
         Customer customer = (Customer)response.getEntity();
         Booking booking = createBookingInstance(taxi, customer);
         bookingSvc.createBooking(booking);
@@ -157,7 +156,7 @@ public class BookingRestServiceTest {
     public void testDeleteBooking() throws Exception {
         Response response = taxiSvc.createTaxi(createTaxiInstance("AXT8784", 6));
         Taxi taxi = (Taxi) response.getEntity();
-        response = customerRestService.createCustomer(createCustomerInstance("john104@doe.com", "John", "Doe", "(212) 555-1234"));
+        response = customerRestService.createCustomer(createCustomerInstance("john104@doe.com", "John", "Doe", "09876543210"));
         Customer customer = (Customer)response.getEntity();
         Booking booking = createBookingInstance(taxi, customer);
         bookingSvc.createBooking(booking);

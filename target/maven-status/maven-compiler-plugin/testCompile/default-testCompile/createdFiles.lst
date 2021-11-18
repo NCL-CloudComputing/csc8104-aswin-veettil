@@ -1,5 +1,8 @@
 org/jboss/quickstarts/wfk/booking/GuestBookingRestServiceTest.class
 org/jboss/quickstarts/wfk/booking/BookingRestServiceTest.class
+org/jboss/quickstarts/wfk/validator/TaxiValidatorTest.class
+org/jboss/quickstarts/wfk/validator/BookingValidatorTest.class
+org/jboss/quickstarts/wfk/validator/CustomerValidatorTest.class
 org/jboss/quickstarts/wfk/booking/TaxiRestServiceTest.class
 org/jboss/quickstarts/wfk/booking/CustomerRestServiceTest.class
 org/jboss/quickstarts/wfk/contact/ContactRegistrationTest.class

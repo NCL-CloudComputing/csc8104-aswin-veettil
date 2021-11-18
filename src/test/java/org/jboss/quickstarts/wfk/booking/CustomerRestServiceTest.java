@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 
 /**
  * <p>A suite of tests, run with {@link org.jboss.arquillian Arquillian} to test the JAX-RS endpoint for
- * Contact creation functionality
  * (see {@link CustomerRestService#createCustomer(Customer)} ).<p/>
  *
  * @see CustomerRestService
@@ -62,7 +61,7 @@ public class CustomerRestServiceTest {
     @Test
     @InSequence(1)
     public void testRegisterCustomer() throws Exception {
-        Customer customer = createCustomerInstance("john1@doe.com", "John", "Doe", "(212) 555-1234");
+        Customer customer = createCustomerInstance("john1@doe.com", "John", "Doe", "09876543210");
         Response response = customerRestService.createCustomer(customer);
 
         assertEquals("Unexpected response status", 201, response.getStatus());
@@ -87,11 +86,11 @@ public class CustomerRestServiceTest {
     @InSequence(3)
     public void testDuplicateEmail() throws Exception {
         // Register an initial user
-        Customer customer = createCustomerInstance("jane2@doe.com","Jane", "Doe", "(212) 555-1234");
+        Customer customer = createCustomerInstance("jane2@doe.com","Jane", "Doe", "09876543210");
         customerRestService.createCustomer(customer);
 
         // Register a different user with the same email
-        Customer anotherCustomer = createCustomerInstance("jane2@doe.com", "John", "Doe", "(213) 355-1234");
+        Customer anotherCustomer = createCustomerInstance("jane2@doe.com", "John", "Doe", "09876543210");
 
         try {
             customerRestService.createCustomer(anotherCustomer);
@@ -108,7 +107,7 @@ public class CustomerRestServiceTest {
     @Test
     @InSequence(4)
     public void testFindCustomer() throws Exception {
-        Customer customer = createCustomerInstance("jane3@doe.com","Jane", "Doe", "(212) 555-1234");
+        Customer customer = createCustomerInstance("jane3@doe.com","Jane", "Doe", "09876543210");
         customerRestService.createCustomer(customer);
 
         Response res = customerRestService.retrieveCustomerById(customer.getId());
@@ -130,7 +129,7 @@ public class CustomerRestServiceTest {
     @Test
     @InSequence(5)
     public void testDeleteCustomer() throws Exception {
-        Customer customer = createCustomerInstance("jane4@doe.com","Jane", "Doe", "(212) 555-1234");
+        Customer customer = createCustomerInstance("jane4@doe.com","Jane", "Doe", "09876543210");
         customerRestService.createCustomer(customer);
 
         Response res = customerRestService.deleteCustomer(customer.getId());
