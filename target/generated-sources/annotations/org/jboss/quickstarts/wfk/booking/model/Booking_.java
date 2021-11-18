@@ -9,7 +9,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Booking.class)
 public abstract class Booking_ {
 
-	public static volatile SingularAttribute<Booking, Long> travelAgentId;
+	public static volatile SingularAttribute<Booking, Boolean> isTravelAgentBooking;
 	public static volatile SingularAttribute<Booking, Long> flightBookingId;
 	public static volatile SingularAttribute<Booking, Taxi> taxi;
 	public static volatile SingularAttribute<Booking, Long> taxiId;

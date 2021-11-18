@@ -26,4 +26,4 @@ insert into Taxi (id, vehicle_reg_no, no_of_seats) values (1, 'MXT6917', 5)
 insert into Taxi (id, vehicle_reg_no, no_of_seats) values (3, 'NC4831', 3)
 insert into Taxi (id, vehicle_reg_no, no_of_seats) values (4, 'AS5662', 7)
 
-insert into Customer (id, first_name, last_name, email, phone_number) values (2, 'John', 'Doe', 'john@doe.com', '(212) 555-1234')
+insert into Customer (id, first_name, last_name, email, phone_number) values (2, 'John', 'Doe', 'john@doe.com', '09765345786')

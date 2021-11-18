@@ -122,7 +122,7 @@ public class TaxiRestService {
         } catch (UniqueRegNoException e) {
             // Handle the unique constraint violation
             Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("vehicleRegNo", "That registration number is already used, please use a unique registration number");
+            responseObj.put("vehicleRegNo", "The registration number is already used, please use a unique registration number");
             throw new RestServiceException("Bad Request", responseObj, Response.Status.CONFLICT, e);
         } catch (ValidationException ce) {
             //Handle bean validation issues

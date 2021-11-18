@@ -47,7 +47,8 @@ public class Booking implements Serializable {
     private Customer customer;
 
     @JsonIgnore
-    private Long travelAgentId;
+    @Column(name="is_travel_agent_booking")
+    private boolean isTravelAgentBooking;
 
     @JsonIgnore
     private Long hotelBookingId;
@@ -107,13 +108,12 @@ public class Booking implements Serializable {
         this.flightId = flightId;
     }
 
-    public Long getTravelAgentId() {
-        return travelAgentId;
+    public boolean isTravelAgentBooking() {
+        return isTravelAgentBooking;
     }
-
     @JsonIgnore
-    public void setTravelAgentId(Long travelAgentId) {
-        this.travelAgentId = travelAgentId;
+    public void setTravelAgentBooking(boolean travelAgentBooking) {
+        isTravelAgentBooking = travelAgentBooking;
     }
 
     public void setTaxiId(Long taxiId) {

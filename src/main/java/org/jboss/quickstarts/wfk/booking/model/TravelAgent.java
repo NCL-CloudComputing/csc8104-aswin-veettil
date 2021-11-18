@@ -18,7 +18,6 @@ public class TravelAgent implements Serializable {
     }
 
     public void setBooking(Booking booking) {
-        booking.setTravelAgentId(TRAVEL_AGENT_ID);
         this.booking = booking;
     }
 }

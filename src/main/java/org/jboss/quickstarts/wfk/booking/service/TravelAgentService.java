@@ -38,7 +38,7 @@ public class TravelAgentService {
      */
     public List<Booking> findAll() {
         Map<String, Object> fieldNameToVal = new HashMap<String, Object>() {{
-            put("travelAgentId", TravelAgent.TRAVEL_AGENT_ID);
+            put("isTravelAgentBooking", true);
         }};
         return bookingSvc.findAllByCriteria(fieldNameToVal);
     }
@@ -82,7 +82,7 @@ public class TravelAgentService {
             }
         }
 
-        booking.setTravelAgentId(TravelAgent.TRAVEL_AGENT_ID);
+        booking.setTravelAgentBooking(true);
         try {
             bookingSvc.create(booking);
         } catch (Exception e) {
