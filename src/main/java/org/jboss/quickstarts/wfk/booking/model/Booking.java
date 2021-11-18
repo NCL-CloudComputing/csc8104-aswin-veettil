@@ -128,6 +128,9 @@ public class Booking implements Serializable {
     }
 
     public Long getTaxiId() {
+        if(this.taxi.getId() != null) {
+            this.taxiId = this.taxi.getId();
+        }
         return this.taxiId;
     }
 
@@ -139,6 +142,9 @@ public class Booking implements Serializable {
     }
 
     public Long getCustomerId() {
+        if(this.customer.getId() != null) {
+            this.customerId = this.customer.getId();
+        }
         return this.customerId;
     }
 
