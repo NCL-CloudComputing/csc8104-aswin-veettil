@@ -26,7 +26,7 @@ public class Booking implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date bookingDate;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "taxi_id", referencedColumnName = "id")
     @JsonIgnore
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -39,7 +39,7 @@ public class Booking implements Serializable {
     @Column(name = "flight_id")
     private Long flightId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @JsonIgnore
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")

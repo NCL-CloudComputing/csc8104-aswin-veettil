@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/travelAgent/bookings")
@@ -31,9 +32,13 @@ public class TravelAgentRestService {
      */
     @GET
     @ApiOperation(value = "Fetch all bookings by travel agent", notes = "Returns a JSON array of all stored Booking objects.")
-    public Response retrieveAllBookings() {
-        //Create an empty collection to contain the intersection of bookings to be returned
-        List<Booking> bookings = service.findAll();
+    public Response retrieveAllBookings(@QueryParam("customerId") Long customerId) {
+        List<Booking> bookings = new ArrayList<Booking>();
+        if(customerId != null) {
+            bookings = service.findByCustomerId(customerId);
+        } else {
+            bookings = service.findAll();
+        }
         return Response.ok(bookings).build();
     }
     /**

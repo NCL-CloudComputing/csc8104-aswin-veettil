@@ -14,6 +14,7 @@ org/jboss/quickstarts/wfk/booking/repository/TaxiRepository.class
 org/jboss/quickstarts/wfk/booking/model/Customer_.class
 org/jboss/quickstarts/wfk/util/RestServiceException.class
 org/jboss/quickstarts/wfk/booking/FlightRestService.class
+org/jboss/quickstarts/wfk/booking/service/TravelAgentService$2.class
 org/jboss/quickstarts/wfk/booking/validate/TaxiValidator.class
 org/jboss/quickstarts/wfk/booking/service/BookingService.class
 org/jboss/quickstarts/wfk/booking/model/external/hotel/HotelGuestBooking.class

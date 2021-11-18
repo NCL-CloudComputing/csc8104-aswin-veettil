@@ -32,7 +32,7 @@ public class TravelAgentService {
         client = new ResteasyClientBuilder().build();
     }
     /**
-     * <p>Returns a List of all persisted {@link TravelAgent} objects, sorted alphabetically by last name.<p/>
+     * <p>Returns a List of all persisted {@link TravelAgent} objects<p/>
      *
      * @return List of TravelAgent objects
      */
@@ -42,7 +42,18 @@ public class TravelAgentService {
         }};
         return bookingSvc.findAllByCriteria(fieldNameToVal);
     }
-
+    /**
+     * <p>Returns a List of all persisted {@link TravelAgent} objects based on customerId<p/>
+     *
+     * @return List of TravelAgent objects
+     */
+    public List<Booking> findByCustomerId(Long customerId) {
+        Map<String, Object> fieldNameToVal = new HashMap<String, Object>() {{
+            put("isTravelAgentBooking", true);
+            put("customer", customerId);
+        }};
+        return bookingSvc.findAllByCriteria(fieldNameToVal);
+    }
     /**
      * <p>Writes the provided Booking object to the application database.<p/>
      *
