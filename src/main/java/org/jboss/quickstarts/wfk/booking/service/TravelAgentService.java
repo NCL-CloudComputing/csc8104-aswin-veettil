@@ -101,7 +101,7 @@ public class TravelAgentService {
                 hotelService.deleteHotelBooking(booking.getHotelBookingId());
             }
             if(booking.getFlightId() != null) {
-                flightService.deleteFlightBooking(booking.getHotelBookingId());
+                flightService.deleteFlightBooking(booking.getFlightBookingId());
             }
             throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
