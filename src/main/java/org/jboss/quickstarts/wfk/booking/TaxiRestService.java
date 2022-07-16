@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 @Api(value = "/taxis", description = "Operations about taxi")
 @Stateless
 public class TaxiRestService {
-    //https://aswinkv.atlassian.net/wiki/spaces/TCS/pages/1016035/Booking+Service
     @Inject
     private @Named("logger")
     Logger log;

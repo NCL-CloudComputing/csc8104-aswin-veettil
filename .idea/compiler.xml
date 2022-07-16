@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jboss-contacts-swagger" />
+        <module name="csc8104-aswin-veettil" />
       </profile>
     </annotationProcessing>
   </component>
